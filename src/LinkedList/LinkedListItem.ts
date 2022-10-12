@@ -2,7 +2,7 @@ import {
   LinkedListItem as ILinkedListItem,
   ListItemVal,
   ListItemLink
-} from "../interface";
+} from "./interface";
 
 export default class LinkedListItem<T> implements ILinkedListItem<T> {
   value: ListItemVal<T>;

@@ -1,10 +1,12 @@
 // Очередь на основе связного списка
 import {
-  Queue as IQueue,
+  Queue as IQueue
+} from "./interface";
+import LinkedList from "../LinkedList/LinkedList";
+import {
   ListItemVal,
   ListItemLink
-} from "../interface";
-import LinkedList from "../LinkedList/LinkedList";
+} from "../LinkedList/interface";
 
 export default class Queue<T> extends LinkedList<T> implements IQueue<T> {
   public maxSize: number = 10;

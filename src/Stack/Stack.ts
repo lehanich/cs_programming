@@ -1,8 +1,11 @@
 // Стек
 import {
   Stack as IStack,
-  ListItemVal
-} from "../interface";
+} from "./interface";
+import {
+  ListItemVal,
+  ListItemLink
+} from "../LinkedList/interface";
 
 export default class Stack<T> implements IStack<T> {
   readonly maxSize: number;

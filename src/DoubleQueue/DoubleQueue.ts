@@ -2,9 +2,11 @@
 import Queue from "../Queue/Queue";
 import {
   DoubleQueue as IDoubleQueue,
+} from "./interface";
+import {
   ListItemVal,
   ListItemLink
-} from "../interface";
+} from "../LinkedList/interface";
 
 export default class DoubleQueue<T> extends Queue<T> implements IDoubleQueue<T> {
   public maxSize: number = 10;

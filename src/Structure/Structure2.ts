@@ -3,7 +3,7 @@
 import {
   Structure as IStructure,
   StructureItem
-} from "../interface";
+} from "./interface";
 
 export default class Structure<T> implements IStructure<T> {
   protected keys: string[];
