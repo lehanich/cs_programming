@@ -4,7 +4,6 @@ import {
 } from "./interface";
 import {
   ListItemVal,
-  ListItemLink
 } from "../LinkedList/interface";
 
 export default class Stack<T> implements IStack<T> {
@@ -22,7 +21,6 @@ export default class Stack<T> implements IStack<T> {
 
   push(value: ListItemVal<T>): void {
     if (this.top === this.maxSize) {
-      // throw console.error("stack overflow");
       throw new Error('Stack is overflow');
     }
 
@@ -33,7 +31,6 @@ export default class Stack<T> implements IStack<T> {
 
   pop(): ListItemVal<T> {
     if (this.top === 0) {
-      // throw console.error("stack is empty");
       throw new Error('Stack is empty');
     }
 
