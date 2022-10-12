@@ -2,7 +2,7 @@
 import {
   Stack as IStack,
   ListItemVal
-} from "./interface";
+} from "../interface";
 
 export default class Stack<T> implements IStack<T> {
   readonly maxSize: number;
@@ -19,7 +19,8 @@ export default class Stack<T> implements IStack<T> {
 
   push(value: ListItemVal<T>): void {
     if (this.top === this.maxSize) {
-      throw console.error("stack overflow");
+      // throw console.error("stack overflow");
+      throw new Error('Stack is overflow');
     }
 
     this.head = value;
@@ -29,7 +30,8 @@ export default class Stack<T> implements IStack<T> {
 
   pop(): ListItemVal<T> {
     if (this.top === 0) {
-      throw console.error("stack is empty");
+      // throw console.error("stack is empty");
+      throw new Error('Stack is empty');
     }
 
     const value = this.stackArray.pop()

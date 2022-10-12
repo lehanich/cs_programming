@@ -1,11 +1,10 @@
 // Очередь на основе связного списка
-import Queue from "./Queue";
+import Queue from "../Queue/Queue";
 import {
   DoubleQueue as IDoubleQueue,
   ListItemVal,
   ListItemLink
-} from "./interface";
-import LinkedList from "./LinkedList";
+} from "../interface";
 
 export default class DoubleQueue<T> extends Queue<T> implements IDoubleQueue<T> {
   public maxSize: number = 10;
@@ -20,33 +19,16 @@ export default class DoubleQueue<T> extends Queue<T> implements IDoubleQueue<T> 
     this.rear = null;
   }
 
-  // public push(value: ListItemVal<T>): void {
-  //   if (this.length < this.maxSize) {
-  //     this.add(value)
-
-  //     if (!this.head) {
-  //       this.head = this.first;
-  //     }
-  //     this.length++;
-  //     this.rear = this.last;
-  //   }
-  // }
-
   public pop(): ListItemVal<T> {
     if (!this.last) {
-      return <T>"error";
+      throw new Error('Queue is empty');
+      // return <T>"error";
     }
 
     const value = this.last?.value;
     const oldLast = this.deleteLast();
 
-    // this.last =  this.last?.prev;
-
-    // if (this.last) {
-    //   delete this.last!.next;
-    // }
     this.length--;
-    // this.head = this.first;
 
     return <T>value;
   }
@@ -66,10 +48,6 @@ export default class DoubleQueue<T> extends Queue<T> implements IDoubleQueue<T> 
   public shift(): ListItemVal<T> {
     const deleteFirst = this.deleteFirst();
 
-    // this.first = this.first?.next;
-    // if (this.first) {
-    //   delete this.first!.prev;
-    // }
     this.length--;
 
     return <T>deleteFirst?.value;

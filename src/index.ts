@@ -1,8 +1,8 @@
-import LinkedList from "./LinkedList";
-import Queue from "./Queue";
-import DoubleQueue from "./DoubleQueue";
-import Stack from "./Stack";
-import Structure from "./Structure";
+import LinkedList from "./LinkedList/LinkedList";
+import Queue from "./Queue/Queue";
+import DoubleQueue from "./DoubleQueue/DoubleQueue";
+import Stack from "./Stack/Stack";
+import Structure from "./Structure/Structure";
 
 const list = new LinkedList();
 
@@ -46,11 +46,6 @@ const dequeue = new DoubleQueue(3);
 dequeue.push(10);
 dequeue.unshift(11);
 dequeue.push(12);
-
-console.log("тест данных");
-for (const value of dequeue) {
-  console.log(value);
-}
 
 console.log(dequeue.pop());   // 12
 console.log(dequeue.shift()); // 11

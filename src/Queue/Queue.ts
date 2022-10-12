@@ -3,8 +3,8 @@ import {
   Queue as IQueue,
   ListItemVal,
   ListItemLink
-} from "./interface";
-import LinkedList from "./LinkedList";
+} from "../interface";
+import LinkedList from "../LinkedList/LinkedList";
 
 export default class Queue<T> extends LinkedList<T> implements IQueue<T> {
   public maxSize: number = 10;
@@ -33,7 +33,8 @@ export default class Queue<T> extends LinkedList<T> implements IQueue<T> {
 
   public pop(): ListItemVal<T> {
     if (!this.first) {
-      return <T>"error";
+      throw new Error('Queue is empty');
+      // return <T>"error";
     }
 
     const value = this.first?.value;

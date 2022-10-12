@@ -3,7 +3,7 @@ import {
   LinkedList as ILinkedList,
   ListItemVal,
   ListItemLink
-} from "./interface";
+} from "../interface";
 import LinkedListItem from "./LinkedListItem";
 
 export default class LinkedList<T> implements ILinkedList<T> {
