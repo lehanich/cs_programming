@@ -1,5 +1,9 @@
 export interface LinkedList<T> {
-  add(value: ListItemVal<T>): LinkedList<T>;
+  first: ListNodeLink<T>;
+  last: ListNodeLink<T>;
+  next: ListNodeLink<T>;
+
+  add(value: ListNodeVal<T>): LinkedList<T>;
 
   // first: LinkedListItem<T>;
   // last: LinkedListItem<T>;
@@ -9,21 +13,24 @@ export interface LinkedList<T> {
   // addFirst:;
   // addLast:;
 
-  insertFirst(value: ListItemVal<T>): LinkedList<T>;
-  deleteFirst(): ListItemLink<T>;
-  deleteLast(): ListItemLink<T>;
+  insertFirst(value: ListNodeVal<T>): LinkedList<T>;
+  deleteFirst(): ListNodeLink<T>;
+  deleteLast(): ListNodeLink<T>;
 
   // deleteElement():;
   // insert():;
   // find():;
 }
 
-export interface LinkedListItem<T> {
-  value: ListItemVal<T>;
-  next: ListItemLink<T>;
-  prev?: ListItemLink<T>;
+export interface LinkedListNode<T> {
+  value: ListNodeVal<T>;
+  array?: ListNodeVal<T>[];
+  next: ListNodeLink<T>;
+  prev?: ListNodeLink<T>;
 }
 
-export type ListItemVal<T> = T;
+export type ListNodeVal<T> = T | undefined;
 
-export type ListItemLink<T> = undefined | null | LinkedListItem<T>;
+export type ListNodeLink<T> = undefined | null | LinkedListNode<T>;
+
+export type ListNodeArray<T> = ListNodeVal<T>[];

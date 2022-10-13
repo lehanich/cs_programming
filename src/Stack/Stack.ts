@@ -3,14 +3,14 @@ import {
   Stack as IStack,
 } from "./interface";
 import {
-  ListItemVal,
+  ListNodeVal,
 } from "../LinkedList/interface";
 
 export default class Stack<T> implements IStack<T> {
   readonly maxSize: number;
-  public head: ListItemVal<T> | undefined;
+  public head: ListNodeVal<T> | undefined;
   protected top: number;
-  protected stackArray: ListItemVal<T>[];
+  protected stackArray: ListNodeVal<T>[];
 
   constructor(size: number) {
     this.maxSize = size;
@@ -19,7 +19,7 @@ export default class Stack<T> implements IStack<T> {
     this.head = undefined;
   }
 
-  push(value: ListItemVal<T>): void {
+  push(value: ListNodeVal<T>): void {
     if (this.top === this.maxSize) {
       throw new Error('Stack is overflow');
     }
@@ -29,7 +29,7 @@ export default class Stack<T> implements IStack<T> {
     this.top++;
   };
 
-  pop(): ListItemVal<T> {
+  pop(): ListNodeVal<T> {
     if (this.top === 0) {
       throw new Error('Stack is empty');
     }
@@ -38,14 +38,14 @@ export default class Stack<T> implements IStack<T> {
     this.top--;
     this.head = this.stackArray[this.top-1];
 
-    return <ListItemVal<T>>value;
+    return <ListNodeVal<T>>value;
   };
 
-  // peek(): ListItemVal<T> {
+  // peek(): ListNodeVal<T> {
   //   if (this.top === 0) {
   //     throw console.error("stack is empty");
   //   }
 
-  //   return <ListItemVal<T>>this.stackArray[this.top];
+  //   return <ListNodeVal<T>>this.stackArray[this.top];
   // };
 }

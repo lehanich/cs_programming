@@ -1,15 +1,16 @@
 //  двусторонний двусвязанный список
 import {
   LinkedList as ILinkedList,
-  ListItemVal,
-  ListItemLink
+  ListNodeVal,
+  ListNodeLink,
+  ListNodeArray
 } from "./interface";
-import LinkedListItem from "./LinkedListItem";
+import LinkedListNode from "./LinkedListNode";
 
 export default class LinkedList<T> implements ILinkedList<T> {
-  first: ListItemLink<T> = null;
-  last: ListItemLink<T> = null;
-  next: ListItemLink<T> = null;
+  first: ListNodeLink<T> = null;
+  last: ListNodeLink<T> = null;
+  next: ListNodeLink<T> = null;
 
   constructor() {
     this.first = null;
@@ -17,8 +18,8 @@ export default class LinkedList<T> implements ILinkedList<T> {
     this.next = null;
   }
 
-  public add(value: ListItemVal<T>): ILinkedList<T> {
-    const newItem = new LinkedListItem(value);
+  public add(value: ListNodeVal<T> | ListNodeArray<T>): ILinkedList<T> {
+    const newItem = new LinkedListNode(value);
 
     if (!this.first || !this.last) {
       this.first = newItem;
@@ -63,8 +64,8 @@ export default class LinkedList<T> implements ILinkedList<T> {
 
   // }
 
-  insertFirst(value: ListItemVal<T>): ILinkedList<T> {
-    const newItem = new LinkedListItem(value);
+  insertFirst(value: ListNodeVal<T>): ILinkedList<T> {
+    const newItem = new LinkedListNode(value);
 
     if (!this.first || !this.last) {
       this.first = newItem;
@@ -81,7 +82,7 @@ export default class LinkedList<T> implements ILinkedList<T> {
     return this;
   }
 
-  deleteFirst(): ListItemLink<T> {
+  deleteFirst(): ListNodeLink<T> {
     if (!this.first) {
       return null;
     }
@@ -97,7 +98,7 @@ export default class LinkedList<T> implements ILinkedList<T> {
     return deletedFirst;
   }
 
-  deleteLast(): ListItemLink<T> {
+  deleteLast(): ListNodeLink<T> {
     if (!this.last) {
       return null;
     }

@@ -4,15 +4,15 @@ import {
 } from "./interface";
 import LinkedList from "../LinkedList/LinkedList";
 import {
-  ListItemVal,
-  ListItemLink
+  ListNodeVal,
+  ListNodeLink
 } from "../LinkedList/interface";
 
 export default class Queue<T> extends LinkedList<T> implements IQueue<T> {
   public maxSize: number = 10;
   public length: number = 0;
-  public head: ListItemLink<T> = null;
-  public rear: ListItemLink<T> = null;
+  public head: ListNodeLink<T> = null;
+  public rear: ListNodeLink<T> = null;
 
   constructor(maxSize: number) {
     super();
@@ -21,7 +21,7 @@ export default class Queue<T> extends LinkedList<T> implements IQueue<T> {
     this.rear = null;
   }
 
-  public push(value: ListItemVal<T>): void {
+  public push(value: ListNodeVal<T>): void {
     if (this.length < this.maxSize) {
       this.add(value)
 
@@ -33,7 +33,7 @@ export default class Queue<T> extends LinkedList<T> implements IQueue<T> {
     }
   }
 
-  public pop(): ListItemVal<T> {
+  public pop(): ListNodeVal<T> {
     if (!this.first) {
       throw new Error('Queue is empty');
       // return <T>"error";

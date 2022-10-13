@@ -7,7 +7,7 @@
 
 ссылки next prev
 
-```
+```js
 const list = LinkedList();
 
 list.add(1);
@@ -32,7 +32,7 @@ console.log(list.first.next.prev.value); // 1
 
 ссылки next prev
 
-```
+```js
 const list = new LinkedList();
 
 list.add(1);
@@ -52,7 +52,7 @@ for (const value of list) {
 
 свойства head rear maxSize length
 
-```
+```js
 const queue = new Queue(3);
 
 queue.push(10);
@@ -87,7 +87,7 @@ shift - взять из начала очереди
 
 свойства head rear maxSize length
 
-```
+```js
 const dequeue = new Queue(3);
 
 dequeue.push(10);
@@ -111,7 +111,7 @@ console.log(dequeue.pop());   // Exception
 
 свойства head maxSize
 
-```
+```js
 const stack = new Stack(3);
 
 stack.push(10);
@@ -140,7 +140,7 @@ new Structure(['name', 'lastName', 'age']) - в конструктор заод�
 
 метод .get('name') - считывает значение поля name
 
-```
+```js
 const jackBlack = new Structure(['name', 'lastName', 'age']); // Определяются ключи структуры
 
 // Ввводятся значения
@@ -157,7 +157,7 @@ jackBlack.get('name') // 'Jack'
 
 ## Запуск
 
-```
+```js
 npm test
 
 npm run start
