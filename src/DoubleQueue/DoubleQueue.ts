@@ -4,15 +4,15 @@ import {
   DoubleQueue as IDoubleQueue,
 } from "./interface";
 import {
-  ListItemVal,
-  ListItemLink
+  ListNodeVal,
+  ListNodeLink
 } from "../LinkedList/interface";
 
 export default class DoubleQueue<T> extends Queue<T> implements IDoubleQueue<T> {
   public maxSize: number = 10;
   public length: number = 0;
-  public head: ListItemLink<T> = null;
-  public rear: ListItemLink<T> = null;
+  public head: ListNodeLink<T> = null;
+  public rear: ListNodeLink<T> = null;
 
   constructor(maxSize: number) {
     super(maxSize);
@@ -21,7 +21,7 @@ export default class DoubleQueue<T> extends Queue<T> implements IDoubleQueue<T> 
     this.rear = null;
   }
 
-  public pop(): ListItemVal<T> {
+  public pop(): ListNodeVal<T> {
     if (!this.last) {
       throw new Error('Queue is empty');
       // return <T>"error";
@@ -35,7 +35,7 @@ export default class DoubleQueue<T> extends Queue<T> implements IDoubleQueue<T> 
     return <T>value;
   }
 
-  public unshift(value: ListItemVal<T>): void {
+  public unshift(value: ListNodeVal<T>): void {
     if (this.length != this.maxSize) {
       this.insertFirst(value)
 
@@ -47,7 +47,7 @@ export default class DoubleQueue<T> extends Queue<T> implements IDoubleQueue<T> 
     }
   };
 
-  public shift(): ListItemVal<T> {
+  public shift(): ListNodeVal<T> {
     const deleteFirst = this.deleteFirst();
 
     this.length--;
