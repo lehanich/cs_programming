@@ -1,17 +1,17 @@
 import {
-  ListItemVal,
-  ListItemLink
+  ListNodeVal,
+  ListNodeLink
 } from "../LinkedList/interface";
 
 export interface DoubleQueue<T> {
   maxSize: number;
   length: number;
-  head?: ListItemLink<T>;
-  rear?: ListItemLink<T>;
+  head?: ListNodeLink<T>;
+  rear?: ListNodeLink<T>;
 
-  push(value: ListItemVal<T>): void;
-  pop(): ListItemVal<T>;
+  push(value: ListNodeVal<T>): void;
+  pop(): ListNodeVal<T>;
 
-  unshift(value: ListItemVal<T>): void;
-  shift(): ListItemVal<T>;
+  unshift(value: ListNodeVal<T>): void;
+  shift(): ListNodeVal<T>;
 }
