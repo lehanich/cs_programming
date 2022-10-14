@@ -47,24 +47,21 @@ export default class LinkedList<T> implements ILinkedList<T> {
     }
   }
 
-  // public first(): LinkedListItem<T> {
+  find(key: number): ListNodeLink<T> {
+    let current: ListNodeLink<T> = this.first;
 
-  //   return true;
-  // }
+    while (current?.value !== key) {
+      if (current?.next == null) {
+        return null;
+      } else {
+        current = current?.next;
+      }
+    }
 
-  // public last(): LinkedListItem<T> {
+    return current
+  }
 
-  // }
-
-  // public next(): LinkedListItem<T> {
-
-  // }
-
-  // public prev(): LinkedListItem<T> {
-
-  // }
-
-  insertFirst(value: ListNodeVal<T>): ILinkedList<T> {
+  insertFirst(value: ListNodeVal<T> | ListNodeArray<T>): ILinkedList<T> {
     const newItem = new LinkedListNode(value);
 
     if (!this.first || !this.last) {
