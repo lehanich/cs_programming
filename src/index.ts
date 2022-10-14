@@ -4,6 +4,8 @@ import DoubleQueue from "./DoubleQueue/DoubleQueue";
 import Stack from "./Stack/Stack";
 import Structure from "./Structure/Structure";
 import DynamicArray from "./DynamicArray/DynamicArray";
+import Vector from "./Vector/Vector";
+import HashMap from "./HashMap/HashMap";
 
 const list = new LinkedList();
 
@@ -113,7 +115,7 @@ console.log(arr.print());
 
 console.log("check iterable");
 for (const value of arr) {
-  console.log(value);
+  console.log("$",value);
 }
 
 // const list2 = new LinkedList();
@@ -124,3 +126,26 @@ for (const value of arr) {
 // for (const value of list2) {
 //     console.log("iterator", value);
 //   }
+console.log("check vector");
+const arr_v = new Vector(2);
+
+arr_v.add(1);
+arr_v.add(2);
+arr_v.add(3);
+arr_v.add(4);
+arr_v.add(5);
+
+console.log(arr_v.get(0));  // 1
+console.log(arr_v.get(1));  // 2
+console.log(arr_v.get(4));  // 5
+arr_v.remove(3)
+console.log(arr_v.get(3));
+
+console.log("check hash table");
+const map = new HashMap();
+
+map.set('foo', 'bar');
+map.set(10, 'bla');
+
+// console.log(map.get('foo')); // 'bar'
+// console.log(map.get(10));    // 'bla'
