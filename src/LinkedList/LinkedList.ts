@@ -35,14 +35,14 @@ export default class LinkedList<T> implements ILinkedList<T> {
     return this;
   }
 
-  *[Symbol.iterator]() {
-    yield this.first?.value;
+  *[Symbol.iterator](): Iterator<T> {
+    yield <T>this.first?.value;
 
     let currentNode = this.first;
 
     while (currentNode) {
       currentNode = currentNode.next;
-      yield currentNode?.value;
+      yield <T>currentNode?.value;
     }
   }
 

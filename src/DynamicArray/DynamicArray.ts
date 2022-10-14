@@ -42,7 +42,7 @@ export default class DynamicArray<T> implements IDynamicArray<T> {
     return Math.floor(index / this.#maxElements);
   }
 
-  public add(element: ArrayItem<T>): void {
+  public add(element: T): void {
     if (this.length % this.#maxElements === 0 && this.length > 0) {
       this.#arrayData.add(new Array<T>(this.#maxElements));
     }
@@ -60,7 +60,7 @@ export default class DynamicArray<T> implements IDynamicArray<T> {
     this.length++;
   }
 
-  public get(index: number): ArrayItem<T> {
+  public get(index: number): T | undefined {
     let node = this.#getNode(index);
     let current = this.#arrayData.first;
 
@@ -78,5 +78,15 @@ export default class DynamicArray<T> implements IDynamicArray<T> {
 
   public print() {
     return this.#arrayData;
+  }
+
+  *[Symbol.iterator](): Iterator<T> { // не работает!!!
+    for (const array of this.#arrayData) {
+      console.log(array)
+      for (let i = 0; i < this.#maxElements; i += 1) {
+        console.log(array)
+        yield array[i];
+      }
+    }
   }
 }

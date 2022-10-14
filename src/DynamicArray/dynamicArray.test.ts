@@ -8,12 +8,16 @@ describe("DynamicArray create", function () {
   });
 });
 
-describe("DoubleQueue functions", function () {
+describe("DynamicArray functions", function () {
   const arr = new DynamicArray(3);
 
   it("can insert element", () => {
     arr.add(1);
     expect(arr.length === 1 && arr.get(0) === 1);
+  });
+
+  it("is iterable", () => {
+    expect(typeof arr[Symbol.iterator] === "function");
   });
 
   it("can insert more than 3", () => {

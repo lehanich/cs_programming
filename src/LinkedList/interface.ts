@@ -9,6 +9,7 @@ export interface LinkedList<T> {
   deleteLast(): ListNodeLink<T>;
   find(key: number): ListNodeLink<T>;
 
+  [Symbol.iterator](): Iterator<T>;
   // deleteElement():;
 }
 

@@ -15,6 +15,10 @@ describe("LinkedList functions", function () {
   list.add(2);
   list.add(3);
 
+  it("LinkedList is iterable", () => {
+    expect(typeof list[Symbol.iterator] === "function");
+  });
+
   it("LinkedList first element has value", () => {
     expect(list.first?.value === 1);
   });

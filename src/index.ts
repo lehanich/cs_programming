@@ -109,3 +109,18 @@ console.log(arr.get(0));  // 1
 console.log(arr.get(1));  // 2
 console.log(arr.get(4));  // 5
 console.log(arr.get(4));
+console.log(arr.print());
+
+console.log("check iterable");
+for (const value of arr) {
+  console.log(value);
+}
+
+// const list2 = new LinkedList();
+
+// list2.add(new Array(1,2,3));
+// list2.add(new Array(5,6,7));
+
+// for (const value of list2) {
+//     console.log("iterator", value);
+//   }
