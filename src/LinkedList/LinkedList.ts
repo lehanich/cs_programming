@@ -3,7 +3,6 @@ import {
   LinkedList as ILinkedList,
   ListNodeVal,
   ListNodeLink,
-  ListNodeArray
 } from "./interface";
 import LinkedListNode from "./LinkedListNode";
 
@@ -18,7 +17,7 @@ export default class LinkedList<T> implements ILinkedList<T> {
     this.next = null;
   }
 
-  public add(value: ListNodeVal<T> | ListNodeArray<T>): ILinkedList<T> {
+  public add(value: ListNodeVal<T>): ILinkedList<T> {
     const newItem = new LinkedListNode(value);
 
     if (!this.first || !this.last) {
@@ -61,7 +60,7 @@ export default class LinkedList<T> implements ILinkedList<T> {
     return current
   }
 
-  insertFirst(value: ListNodeVal<T> | ListNodeArray<T>): ILinkedList<T> {
+  insertFirst(value: ListNodeVal<T>): ILinkedList<T> {
     const newItem = new LinkedListNode(value);
 
     if (!this.first || !this.last) {

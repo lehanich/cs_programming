@@ -1,7 +1,6 @@
-import LinkedList from './LinkedList';
+import LinkedList from "./LinkedList";
 
-
-describe('LinkedList create', function () {
+describe("LinkedList create", function () {
 
   it("should create empty linked list", () => {
     const linkedList = new LinkedList();
@@ -9,7 +8,7 @@ describe('LinkedList create', function () {
   });
 });
 
-describe('LinkedList functions', function () {
+describe("LinkedList functions", function () {
   const list = new LinkedList();
 
   list.add(1);
