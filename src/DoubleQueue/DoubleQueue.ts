@@ -21,7 +21,7 @@ export default class DoubleQueue<T> extends Queue<T> implements IDoubleQueue<T> 
     this.rear = null;
   }
 
-  public pop(): ListNodeVal<T> {
+  public pop(): T {
     if (!this.last) {
       throw new Error('Queue is empty');
       // return <T>"error";
@@ -35,7 +35,7 @@ export default class DoubleQueue<T> extends Queue<T> implements IDoubleQueue<T> 
     return <T>value;
   }
 
-  public unshift(value: ListNodeVal<T>): void {
+  public unshift(value: T): void {
     if (this.length != this.maxSize) {
       this.insertFirst(value)
 
@@ -47,7 +47,7 @@ export default class DoubleQueue<T> extends Queue<T> implements IDoubleQueue<T> 
     }
   };
 
-  public shift(): ListNodeVal<T> {
+  public shift(): T {
     const deleteFirst = this.deleteFirst();
 
     this.length--;

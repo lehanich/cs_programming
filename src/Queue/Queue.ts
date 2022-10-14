@@ -21,7 +21,7 @@ export default class Queue<T> extends LinkedList<T> implements IQueue<T> {
     this.rear = null;
   }
 
-  public push(value: ListNodeVal<T>): void {
+  public push(value: T): void {
     if (this.length < this.maxSize) {
       this.add(value)
 
@@ -33,7 +33,7 @@ export default class Queue<T> extends LinkedList<T> implements IQueue<T> {
     }
   }
 
-  public pop(): ListNodeVal<T> {
+  public pop(): T {
     if (!this.first) {
       throw new Error('Queue is empty');
       // return <T>"error";

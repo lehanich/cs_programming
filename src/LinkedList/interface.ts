@@ -14,7 +14,7 @@ export interface LinkedList<T> {
 }
 
 export interface LinkedListNode<T> {
-  value: ListNodeVal<T>;
+  value: T | undefined;
   next: ListNodeLink<T>;
   prev?: ListNodeLink<T>;
 }

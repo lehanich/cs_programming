@@ -80,13 +80,35 @@ export default class DynamicArray<T> implements IDynamicArray<T> {
     return this.#arrayData;
   }
 
-  *[Symbol.iterator](): Iterator<T> { // не работает!!!
+  get values() {
+    let current = this.#arrayData.first;
+    const self = this;
+    return {
+        *[Symbol.iterator]() {
+            while (current) {
+                for(let i=0; i< self.#maxElements; i++){
+                    if(current!.value![i]){
+                        yield current!.value![i];
+                    }
+                }
+                current = current.next
+            }
+        }
+    }
+  }
+
+  *[Symbol.iterator](): Iterator<T> { 
     for (const array of this.#arrayData) {
-      console.log(array)
+      if (array === undefined) {  // чтобы не проваливаться в ссылку last.next
+        return undefined;
+      }
       for (let i = 0; i < this.#maxElements; i += 1) {
-        console.log(array)
         yield array[i];
       }
     }
+  }
+
+  public delete(index: number): void {
+
   }
 }

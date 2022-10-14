@@ -17,7 +17,7 @@ export default class LinkedList<T> implements ILinkedList<T> {
     this.next = null;
   }
 
-  public add(value: ListNodeVal<T>): ILinkedList<T> {
+  public add(value: T): ILinkedList<T> {
     const newItem = new LinkedListNode(value);
 
     if (!this.first || !this.last) {
@@ -60,8 +60,8 @@ export default class LinkedList<T> implements ILinkedList<T> {
     return current
   }
 
-  insertFirst(value: ListNodeVal<T>): ILinkedList<T> {
-    const newItem = new LinkedListNode(value);
+  insertFirst(value: T): ILinkedList<T> {
+    const newItem:ListNodeLink<T> = new LinkedListNode(value);
 
     if (!this.first || !this.last) {
       this.first = newItem;
