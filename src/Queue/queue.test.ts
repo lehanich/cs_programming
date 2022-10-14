@@ -1,6 +1,6 @@
-import Queue from './Queue';
+import Queue from "./Queue";
 
-describe('Queue create', function () {
+describe("Queue create", function () {
 
   it("empty queue", () => {
     const queue = new Queue(3);
@@ -8,7 +8,7 @@ describe('Queue create', function () {
   });
 });
 
-describe('Queue functions', function () {
+describe("Queue functions", function () {
   const queue = new Queue(4);
 
   queue.push(10);

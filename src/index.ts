@@ -22,22 +22,22 @@ for (const value of list) {
   console.log(value);
 }
 
-// console.log("Очередь на основе связанного списка");
+console.log("Очередь на основе связанного списка");
 
-// const queue = new Queue(4);
+const queue = new Queue(4);
 
-// queue.push(10);
-// queue.push(11);
-// queue.push(12);
+queue.push(10);
+queue.push(11);
+queue.push(12);
 
-// console.log(queue.head?.value);  // 10
+console.log(queue.head?.value);  // 10
 
-// console.log(queue.pop()); // 10
+console.log(queue.pop()); // 10
 
-// console.log(queue.head?.value);  // 11
+console.log(queue.head?.value);  // 11
 
-// console.log(queue.pop()); // 11
-// console.log(queue.pop()); // 12
+console.log(queue.pop()); // 11
+console.log(queue.pop()); // 12
 // console.log(queue.pop()); // Exception
 
 // console.log("Двусторонняя очередь");
@@ -108,3 +108,4 @@ console.log(arr.length);   // 4
 console.log(arr.get(0));  // 1
 console.log(arr.get(1));  // 2
 console.log(arr.get(4));  // 5
+console.log(arr.get(4));

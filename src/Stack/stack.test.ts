@@ -1,6 +1,6 @@
-import Stack from './Stack';
+import Stack from "./Stack";
 
-describe('Stack create', function () {
+describe("Stack create", function () {
 
   it("empty stack", () => {
     const stack = new Stack(3);
@@ -8,7 +8,7 @@ describe('Stack create', function () {
   });
 });
 
-describe('Stack functions', function () {
+describe("Stack functions", function () {
   const stack = new Stack(3);
 
   stack.push(10);

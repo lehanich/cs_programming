@@ -1,6 +1,6 @@
-import DoubleQueue from './DoubleQueue';
+import DoubleQueue from "./DoubleQueue";
 
-describe('DoubleQueue create', function () {
+describe("DoubleQueue create", function () {
 
   it("empty queue", () => {
     const dequeue = new DoubleQueue(3);
@@ -8,7 +8,7 @@ describe('DoubleQueue create', function () {
   });
 });
 
-describe('DoubleQueue functions', function () {
+describe("DoubleQueue functions", function () {
   const dequeue = new DoubleQueue(3);
 
   dequeue.push(10);
@@ -16,7 +16,7 @@ describe('DoubleQueue functions', function () {
   dequeue.push(12);
 
   it("DoubleQueue is iterable", () => {
-    expect(typeof dequeue[Symbol.iterator] === 'function');
+    expect(typeof dequeue[Symbol.iterator] === "function");
   });
 
   it("DoubleQueue get last element", () => {

@@ -4,6 +4,10 @@
   "transform": {
     "^.+\\.(ts|tsx)$": "ts-jest"
   },
-  "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"]
+  "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"],
+  "testEnvironment": "node",
+  "moduleNameMapper": {
+    "^variables$": "variables/dist/cjs",
+    "^[NAME OF MODULE YOU WANT TO IMPORT]$": "[NAME OF MODULE YOU WANT TO IMPORT]/dist/cjs"
+  }
 }
-
