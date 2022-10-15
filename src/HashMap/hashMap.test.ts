@@ -1,15 +1,12 @@
 import HashMap from "./HashMap";
 
-describe("HashMap create", function () {
+describe("HashMap functions", function () {
+  const map = new HashMap(20);
 
   it("empty array", () => {
     const map = new HashMap(20);
     expect(map);
   });
-});
-
-describe("HashMap functions", function () {
-  const map = new HashMap(20);
 
   it("can insert element with key int", () => {
     map.set(10, "bla");
@@ -29,6 +26,20 @@ describe("HashMap functions", function () {
     map.set("foo", "bar3");
 
     expect(map.get("foo") === "bar3");
+  });
+
+  it("keys() is iterable", () => {
+    const map = new HashMap(20);
+
+    map.set(10, "bla");
+    map.set("foo", "bar");
+
+    const test = [...map.keys()];
+
+    expect(typeof map.keys()[Symbol.iterator] === "function");
+    expect(test.length === 2 && 
+      (test[0] === 10 || test[0] === "foo") && 
+      (test[1] === 10 || test[1] === "foo"));
   });
 
 });

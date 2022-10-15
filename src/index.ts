@@ -146,10 +146,9 @@ const map = new HashMap(20);
 
 map.set('foo', 'bar');
 map.set(10, 'bla');
-map.set(10, 'bar');
-
-const test = map.print()
-console.log("$",test[10]);
+map.set(10, 'bla2');
 
 console.log(map.get('foo')); // 'bar'
 console.log(map.get(10));    // 'bla'
+
+console.log([...map.keys()]); // ['foo', '10']

@@ -58,6 +58,24 @@ export default class HashMap<T> implements IHashMap<T> {
     return index;
   }
 
+  public keys() {
+    const self = this;
+
+    return {
+        *[Symbol.iterator]() {
+          for (const list of self.#hashArray) {
+            if (list) {
+              for (const el of list) {
+                if (el) {
+                  yield el.key;
+                }
+              }
+            }
+          }
+        }
+    }
+  }
+
   public print() {
     return this.#hashArray;
   }
