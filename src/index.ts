@@ -142,10 +142,12 @@ arr_v.remove(3)
 console.log(arr_v.get(3));
 
 console.log("check hash table");
-const map = new HashMap();
+const map = new HashMap(20);
 
 map.set('foo', 'bar');
 map.set(10, 'bla');
 
-// console.log(map.get('foo')); // 'bar'
-// console.log(map.get(10));    // 'bla'
+console.log("$",map);
+
+console.log(map.get('foo')); // 'bar'
+console.log(map.get(10));    // 'bla'
