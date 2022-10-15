@@ -7,6 +7,7 @@ import DynamicArray from "./DynamicArray/DynamicArray";
 import Vector from "./Vector/Vector";
 import HashMap from "./HashMap/HashMap";
 import binarySearch from "./BinarySearch/BinarySearch";
+import BinaryTree from "./BinaryTree/BinaryTree";
 
 const list = new LinkedList();
 
@@ -156,3 +157,11 @@ console.log([...map.keys()]); // ['foo', '10']
 
 console.log("Binary search");
 console.log(binarySearch(4, [-432, 0, 1, 1, 2, 2, 2, 3, 4, 5, 6, 98])); // 8 - это индекс 
+
+console.log("Binary tree");
+// const treeSet = BinaryTree([-432, 0, 1, 1, 2, 2, 2, 3, 4, 5, 6, 98]);
+const treeSet = new BinaryTree([5,2,1,3,7,6,8]);
+
+console.log(treeSet.print());
+// treeSet.has(53); // false
+// treeSet.has(98); // true
