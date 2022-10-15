@@ -23,4 +23,12 @@ describe("HashMap functions", function () {
     expect(map.get("foo") === "bar");
   });
 
+  it("can update element", () => {
+    map.set("foo", "bar1");
+    map.set("foo", "bar2");
+    map.set("foo", "bar3");
+
+    expect(map.get("foo") === "bar3");
+  });
+
 });

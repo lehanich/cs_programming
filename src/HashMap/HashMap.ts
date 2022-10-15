@@ -17,6 +17,14 @@ export default class HashMap<T> implements IHashMap<T> {
   public set(key: string | number, value: T): void {
     let index = this.#hashFunction(key);
 
+    for (const el of this.#hashArray[index]) {
+      if (el && el.key === key) {
+        el.data = value;
+
+        return undefined;
+      }
+    }
+
     this.#hashArray[index].add({ key, data: value });
     // console.log
   }
