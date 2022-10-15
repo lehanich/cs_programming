@@ -6,6 +6,7 @@ import Structure from "./Structure/Structure";
 import DynamicArray from "./DynamicArray/DynamicArray";
 import Vector from "./Vector/Vector";
 import HashMap from "./HashMap/HashMap";
+import binarySearch from "./BinarySearch/BinarySearch";
 
 const list = new LinkedList();
 
@@ -152,3 +153,6 @@ console.log(map.get('foo')); // 'bar'
 console.log(map.get(10));    // 'bla'
 
 console.log([...map.keys()]); // ['foo', '10']
+
+console.log("Binary search");
+console.log(binarySearch(4, [-432, 0, 1, 1, 2, 2, 2, 3, 4, 5, 6, 98])); // 8 - это индекс 
