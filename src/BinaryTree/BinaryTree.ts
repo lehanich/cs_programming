@@ -14,8 +14,20 @@ export default class BinaryTree<T> implements IBinaryTree<T> {
     console.log(this.root)
   }
 
-  find(key: number): NodeLink<T> {
-    return this.root;
+  public has(key: number, node: NodeLink<T> = this.root): Boolean {
+    if(node === null || node === undefined) {
+      return false;
+    }
+
+    if(node.key > key) {
+      return this.has(key, node.leftChild);
+    } else if (node!.key < key) {
+      return this.has(key, node.rightChild);
+    } else if (node!.key === key) {
+      return true;
+    }
+
+    return false;
   }
 
   insert(key: number, data: T): void {
@@ -63,8 +75,33 @@ export default class BinaryTree<T> implements IBinaryTree<T> {
     return this.list(this.root);
   }
 
+  public find(key: number): NodeLink<T> {
+    let current: NodeLink<T> = this.root;
+
+    if(!current) {
+      return null;
+    }
+
+    while(current.key !== key) {
+      if(current.key > key) {
+        current = current?.leftChild;
+      } else {
+        current = current?.rightChild;
+      }
+      if(!current) {
+        return null;
+      }
+    }
+
+    return current;
+  }
+
   delete(key: number): Boolean {
 
     return false;
   };
+
+
+
+
 }

@@ -2,9 +2,10 @@
 export interface BinaryTree<T> {
   root: NodeLink<T>;
 
-  find(key: number) :NodeLink<T>;
+  has(key: number, node: NodeLink<T>): Boolean;
   insert(key: number, data: T): void;
   delete(key: number): Boolean;
+  find(key: number): NodeLink<T>;
 }
 
 export type Node<T> = {

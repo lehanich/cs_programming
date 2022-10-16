@@ -163,5 +163,7 @@ console.log("Binary tree");
 const treeSet = new BinaryTree([5,2,1,3,7,6,8]);
 
 console.log(treeSet.print());
-// treeSet.has(53); // false
-// treeSet.has(98); // true
+console.log(treeSet.has(53)); // false
+console.log(treeSet.has(7)); // true
+console.log(treeSet.find(8)); // true
+
