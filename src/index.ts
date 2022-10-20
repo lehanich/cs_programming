@@ -8,6 +8,7 @@ import Vector from "./Vector/Vector";
 import HashMap from "./HashMap/HashMap";
 import binarySearch from "./BinarySearch/BinarySearch";
 import BinaryTree from "./BinaryTree/BinaryTree";
+import Tree234 from "./234-tree/234Tree";
 import BTree from "./b-tree/BTree";
 
 const list = new LinkedList();
@@ -168,9 +169,9 @@ console.log(treeSet.has(53)); // false
 console.log(treeSet.has(7)); // true
 console.log(treeSet.find(8)); // true
 
-console.log("\nB-tree");
+console.log("\n234-tree");
 
-const tree = new BTree();
+const tree = new Tree234();
 
 tree.insert(1);
 tree.insert(2);
@@ -185,6 +186,8 @@ tree.insert(10);
 // tree.insert(11);
 
 tree.print();
+
+const btree = new BTree();
 
 // tree.set('foo', 'bar');
 // tree.set(10, 'bla');
