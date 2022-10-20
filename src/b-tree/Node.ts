@@ -2,20 +2,24 @@
 export default class Node<T> {
   static order: number = 4;
   #length: number = 0;
-  #dataItems: T[] | null[] = new Array(Node.order - 1);
-  #childNodes: Node<T>[] | null[] = new Array(Node.order);
+  #dataItems: T[] | null[] = new Array(); // Array(Node.order - 1);
+  #childNodes: Node<T>[] | null[] = new Array(); // new Array(Node.order);
   #parent?: Node<T> | undefined;
 
   constructor() {
 
   }
 
-  get length () {
+  public get length(): number {
     return this.#length;
   }
 
-  findItem(key: T): number {
-    for (let i=0; i<this.#dataItems.length; i++) {
+  public getLength(): number {
+    return this.#length;
+  }
+
+  public findItem(key: T): number {
+    for (let i=0; i<this.length; i++) {
       if (this.#dataItems[i] === key) {
         return i;
       }
@@ -24,7 +28,7 @@ export default class Node<T> {
     return -1;
   }
 
-  insertItem(dataItem: T): number {
+  public insertItem(dataItem: T): number {
     if (this.isFull()) {
       return -1;
     }
@@ -32,11 +36,14 @@ export default class Node<T> {
     this.#length++;
 
     for (let i = Node.order-2; i >= 0; i--) {
-      if (this.#dataItems[i]! > dataItem) {
-        this.#dataItems[i+1] = this.#dataItems[i];
-      } else {
-        this.#dataItems[i] = dataItem;
-        return i;
+      if (this.#dataItems[i]) {
+        // let data = this.#dataItems[i];
+        if (this.#dataItems[i]! > dataItem) {
+          this.#dataItems[i+1] = this.#dataItems[i];
+        } else {
+          this.#dataItems[i+1] = dataItem;
+          return i+1;
+        }
       }
     }
 
@@ -44,30 +51,32 @@ export default class Node<T> {
     return 0;
   }
 
-  getItem(index: number) {
+  public getItem(index: number) {
     return this.#dataItems[index];
   }
 
-  getChild(index: number) {
+  public getChild(index: number) {
+    // console.log("getChild")
+    // console.dir(this.#childNodes)
     return this.#childNodes[index];
   }
 
-  removeItem(): T {
-    let buffer = this.#dataItems[this.#dataItems.length - 1];
-    this.#dataItems[this.#dataItems.length - 1] = null;
+  public removeItem(): T {
+    let buffer = this.#dataItems[this.length - 1];
+    this.#dataItems[this.length - 1] = null;
     this.#length--;
     return <T>buffer;
   }
 
-  getParent(): Node<T> | undefined {
+  public getParent(): Node<T> | undefined {
     return this.#parent;
   }
 
-  setParent(node: Node<T>): void {
+  public setParent(node: Node<T>): void {
     this.#parent = node;
   }
 
-  isFull(): Boolean {
+  public isFull(): Boolean {
     if (this.#length < Node.order - 1) {
       return false;
     }
@@ -75,19 +84,28 @@ export default class Node<T> {
     return true;
   }
 
-  isLeaf(): Boolean {
-    if (this.#childNodes.length === 0) {
-      return true
+  public isLeaf(): Boolean {
+    for (let i = 0; i < this.length; i++) {
+      if (this.#childNodes[i] !== null && this.#childNodes[i] != undefined) {
+        return false;
+      }
     }
 
-    return false;
+    return true;
+  }
+
+  public print() {
+    for (let i = 0; i < this.length; i++) {
+      console.log(`/${this.#dataItems[i]}`)
+    }
   }
 
   public connectChild(childIndex: number, child: Node<T>): void {
     this.#childNodes[childIndex] = child;
 
-    if (child !== null) {
-      child.#parent = this
+    // console.log(`child childIndex ${childIndex}` + String(child), child)
+    if (child != null && child != undefined) {
+      child.setParent(this);
     }
   }
 
