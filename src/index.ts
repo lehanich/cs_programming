@@ -187,18 +187,22 @@ console.log(treeSet.find(8)); // true
 
 // tree.print();
 
+console.log("\b-tree");
 const btree = new BTree();
 
 btree.insert(1);
 btree.insert(2);
 btree.insert(3);
 btree.insert(4);
+// console.log("\n start insert 5");
 btree.insert(5);
 btree.insert(6);
 btree.insert(7);
 btree.insert(8);
 btree.insert(9);
+console.log("\n start insert 10");
 btree.insert(10);
+console.log("\nfinal print:")
 btree.print();
 // tree.set('foo', 'bar');
 // tree.set(10, 'bla');
