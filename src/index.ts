@@ -169,26 +169,37 @@ console.log(treeSet.has(53)); // false
 console.log(treeSet.has(7)); // true
 console.log(treeSet.find(8)); // true
 
-console.log("\n234-tree");
+// console.log("\n234-tree");
 
-const tree = new Tree234();
+// const tree = new Tree234();
 
-tree.insert(1);
-tree.insert(2);
-tree.insert(3);
-tree.insert(4);
-tree.insert(5);
-tree.insert(6);
-tree.insert(7);
-tree.insert(8);
-tree.insert(9);
-tree.insert(10);
+// tree.insert(1);
+// tree.insert(2);
+// tree.insert(3);
+// tree.insert(4);
+// tree.insert(5);
+// tree.insert(6);
+// tree.insert(7);
+// tree.insert(8);
+// tree.insert(9);
+// tree.insert(10);
 // tree.insert(11);
 
-tree.print();
+// tree.print();
 
 const btree = new BTree();
 
+btree.insert(1);
+btree.insert(2);
+btree.insert(3);
+btree.insert(4);
+btree.insert(5);
+btree.insert(6);
+btree.insert(7);
+btree.insert(8);
+btree.insert(9);
+btree.insert(10);
+btree.print();
 // tree.set('foo', 'bar');
 // tree.set(10, 'bla');
 

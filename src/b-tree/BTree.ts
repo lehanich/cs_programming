@@ -12,14 +12,15 @@ export default class BTree<T> {
     let current: Node<T> = this.#root;
 
     while (true) {
-      if (current.isFull()) {
-        // split
-        this.split(current);
+      if (current.isLeaf()) {
+        if (current.isFull()) {
+          this.split(current, { value: node, child: null });
 
-        current = <Node<T>>current.getParent();
-        current = this.getNextChild(current, node);
-      } else if (current.isLeaf()) {
-        break;
+          current = <Node<T>>current.getParent();
+          current = this.getNextChild(current, node);
+        } else {
+          break;
+        }
       } else {
         current = this.getNextChild(current, node);
       }
@@ -28,14 +29,95 @@ export default class BTree<T> {
     let item = current.insertItem(node);
   }
 
-  split(thisNode: Node<T>): void {
-    let itemIndex: number;
-    let parent: Node<T>;
-    let itemC: T = thisNode.removeItem();
-    let itemB: T = thisNode.removeItem();
-    let child2: Node<T> = thisNode.disconnectChild(2);
-    let child3: Node<T> = thisNode.disconnectChild(3);
+  #bufferSplitArray() {
+
+  }
+
+  split(thisNode: Node<T>, newDivNode: { value: T, child: Node<T> | null }): void {
+    console.log("start split")
+    //buffer array
+    let newItems: T[] = new Array(thisNode.length + 1);
+    let newChildrens: Node<T>[] = new Array(thisNode.length + 2);
+    let j = 0;
+
+    for (let i=0; i < thisNode.length; i++) {
+      let item = thisNode.getItem(i);
+      if (newDivNode.value < item && newDivNode.value > newItems[j-1]) {
+        newItems[j] = newDivNode.value;
+        if (!thisNode.isLeaf()){
+          newChildrens[j] = <Node<T>>newDivNode.child;
+        }
+        j++;
+      }
+      newItems[j] = item;
+      if (!thisNode.isLeaf()){
+        newChildrens[j] = <Node<T>>thisNode.getChild(i);
+      }
+      j++;
+    }
+
+    let indexForSplit: number = Math.ceil(newItems.length / 2); // or Math. floor
+    let newParentValue = newItems[indexForSplit];
+
+    //buffer children links
+    // for (let i=0; i < thisNode.length+1; i++) {
+    //   let child = thisNode.getChild(i);
+    //   if (node < item && node > newItems[j-1]) {
+    //     newItems[j] = node;
+    //     j++;
+    //   }
+    //   newItems[j] = item;
+    //   j++;
+    // }
+    // let child2: Node<T> = thisNode.disconnectChild(2);
+    // let child3: Node<T> = thisNode.disconnectChild(3);
+
+    // prepare newRight
     let newRight: Node<T> = new Node();
+    let itemB: T = newParentValue;
+    let i = 0
+    for(i = newItems.length - 1; i > indexForSplit; i--) {
+
+    }
+    for (let i=thisNode.length - 1; i >= 0; i--) {
+      let item = thisNode.getItem(i);
+      if (item >= newParentValue) {
+        let tempValue = thisNode.removeItem();
+        let child = thisNode.disconnectChild(i+1);
+      }
+    }
+
+   
+
+    i = 0;
+    // let j = 0;
+    for(i = indexForSplit+1; i < newItems.length; i++) {
+      // let tempValue = thisNode.removeItem();
+      if (newDivNode.value)
+      //      let child = thisNode.getChild(i+1);
+      newRight.insertItem(newItems[i]);
+      if (!thisNode.isLeaf()){
+        newRight.connectChild(i , newChildrens[i]);
+      }
+
+      // if (tempValue !== newDivNode.value) {
+      //   newChildrens[i+1] = thisNode.disconnectChild(i+1);
+
+      //   thisNode.connectChild( j , newChildrens[i+1]);
+      // } else {
+      //   thisNode.connectChild( j ,newDivNode.child);
+      // }
+      // newChildrens[i+1] = thisNode.disconnectChild(i+1);
+
+      // thisNode.connectChild();
+    }
+    if (!thisNode.isLeaf()){
+      newRight.connectChild(i , newChildrens[i]);
+    }
+
+    // prepare item for parent node
+    let parent: Node<T>;
+    // let itemB: T = thisNode.removeItem();
 
     if (thisNode === this.#root) {
       this.#root = new Node();
@@ -45,19 +127,68 @@ export default class BTree<T> {
       parent = <Node<T>>thisNode.getParent();
     }
 
-    itemIndex = parent.insertItem(itemB);
+    // insert item to parent
+    let itemIndex: number;
+    let parentLength: number ;
+    if (parent.isFull()) {
+      parent.print()
+      // this.split(parent, { value: itemB, child: newRight });
 
-    let parentLength = parent.length;
+      //thisNode.setParent();
+      parent = <Node<T>>thisNode.getParent();
+      parentLength = parent.length;
+      itemIndex = parent.insertItem(itemB);
+      // itemIndex = parent.findItem(itemB);
+      // current = this.getNextChild(current, node);
+    } else {
+      itemIndex = parent.insertItem(itemB);
+      parentLength = parent.length;
 
-    for (let i = parentLength - 1; i > itemIndex; i--) {
-      let temp: Node<T> = parent.disconnectChild(i);
-      parent.connectChild(i+1, temp);
+      // rebase children links
+      for (let i = parentLength - 1; i > itemIndex; i--) {
+        let temp: Node<T> = parent.disconnectChild(i);
+        parent.connectChild(i+1, temp);
+      }
+
+      parent.connectChild(itemIndex + 1, newRight);
     }
 
-    parent.connectChild(itemIndex+1, newRight);
-    newRight.insertItem(itemC);
-    newRight.connectChild(0, child2);
-    newRight.connectChild(1,child3);
+
+    
+    // newRight.insertItem(itemC);
+    // newRight.connectChild(0, child2);
+    // newRight.connectChild(1,child3);
+
+
+    // let itemIndex: number;
+    // let parent: Node<T>;
+    // let itemC: T = thisNode.removeItem();
+    // let itemB: T = thisNode.removeItem();
+    // let child2: Node<T> = thisNode.disconnectChild(2);
+    // let child3: Node<T> = thisNode.disconnectChild(3);
+    // let newRight: Node<T> = new Node();
+
+    // if (thisNode === this.#root) {
+    //   this.#root = new Node();
+    //   parent = this.#root;
+    //   this.#root.connectChild(0, thisNode);
+    // } else {
+    //   parent = <Node<T>>thisNode.getParent();
+    // }
+
+    // itemIndex = parent.insertItem(itemB);
+
+    // let parentLength = parent.length;
+
+    // for (let i = parentLength - 1; i > itemIndex; i--) {
+    //   let temp: Node<T> = parent.disconnectChild(i);
+    //   parent.connectChild(i+1, temp);
+    // }
+
+    // parent.connectChild(itemIndex+1, newRight);
+    // newRight.insertItem(itemC);
+    // newRight.connectChild(0, child2);
+    // newRight.connectChild(1,child3);
   }
 
   getNextChild(current: Node<T>, node: T): Node<T> {

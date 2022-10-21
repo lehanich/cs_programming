@@ -50,8 +50,8 @@ export default class Node<T> {
     return 0;
   }
 
-  public getItem(index: number) {
-    return this.#dataItems[index];
+  public getItem(index: number): T {
+    return <T>this.#dataItems[index];
   }
 
   public getChild(index: number) {
