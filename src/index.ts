@@ -10,6 +10,8 @@ import binarySearch from "./BinarySearch/BinarySearch";
 import BinaryTree from "./BinaryTree/BinaryTree";
 import Tree234 from "./234-tree/234Tree";
 import BTree from "./b-tree/BTree";
+import isDigit from "./strings/isDigit/isDigit";
+import iter from "./strings/iter/iter";
 
 const list = new LinkedList();
 
@@ -209,3 +211,11 @@ btree.print();
 
 // console.log(tree.get('foo')); // 'bar'
 // console.log(tree.get(10));    // 'bla'
+
+console.log("\nStrings")
+console.log(isDigit('123')) // true
+console.log(isDigit('Ⅻ'))  // true
+console.log(isDigit('Ⅻx'))  // balse
+
+console.log("\iter")
+console.log([...iter("test")]);
