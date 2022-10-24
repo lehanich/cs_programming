@@ -219,3 +219,6 @@ console.log(isDigit('Ⅻx'))  // balse
 
 console.log("\iter")
 console.log([...iter("test")]);
+console.log([...iter("😀")]);
+console.log([...iter("👪")]);
+console.log([...iter("💑")])

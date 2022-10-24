@@ -1,6 +1,8 @@
-export default function iter(string: any) {
+import {charHasPair, checkPair} from "./helpers";
+
+export default function iter(string: string) {
   const chars = string.split("");
-  let done = false;
+  console.log(chars)
   let i = -1;
 
   return {
@@ -9,19 +11,28 @@ export default function iter(string: any) {
     },
 
     next() {
-      console.log(chars[i])
       i++;
-      if (i=== chars.length) {
-        done = true;
-      }
-      return {
-        value: chars[i],
-        done
-      }
-    },
+      let returnValue;
 
-    get done(): Boolean {
-      return done;
+      if (i === chars.length) {
+        return {
+          done: true
+        }
+      }
+
+      returnValue = chars[i];
+
+      if (charHasPair(chars[i])) {
+        let { string, index } = checkPair({chars, index: i, first: true});
+
+        returnValue = string
+        i = index
+      }
+
+      return {
+        value: returnValue,
+        done: false
+      }
     }
   }
 }
