@@ -217,7 +217,7 @@ console.log(isDigit('123')) // true
 console.log(isDigit('Ⅻ'))  // true
 console.log(isDigit('Ⅻx'))  // balse
 
-console.log("\iter")
+console.log("\niter")
 console.log([...iter("test")]);
 console.log([...iter("😀")]);
 console.log([...iter("👪")]);
