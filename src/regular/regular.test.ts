@@ -22,7 +22,7 @@ describe("RegEx expressions", function () {
   it("Convert string to array. Chars for split . , ; ", () => {
     let array = 'foo    bla.bar,gd;4'.split(splitExp);
 
-    expect(Array.isArray(array) && array[0] === "foo" && array.length === 5 && array[4] === "4" );
+    expect(Array.isArray(array) && array[0] === "foo" &&  array.length === 5 && array[4] === "4" );
   });
 
   it("Format string: Change mask in string (like ${user}) to value from object (object.user)", () => {
