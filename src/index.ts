@@ -12,6 +12,12 @@ import Tree234 from "./234-tree/234Tree";
 import BTree from "./b-tree/BTree";
 import isDigit from "./strings/isDigit/isDigit";
 import iter from "./strings/iter/iter";
+import random from "./iterators/random-iterator/random";
+import take from "./iterators/take/take";
+import filter from "./iterators/filter/filter";
+import enumerate from "./iterators/enumerate/enumerate";
+import Range from "./iterators/range/range";
+import seq from "./iterators/seq/seq";
 
 const list = new LinkedList();
 
@@ -222,3 +228,39 @@ console.log([...iter("test")]);
 console.log([...iter("😀")]);
 console.log([...iter("👪")]);
 console.log([...iter("💑")])
+
+const randomInt: IterableIterator<Object> = random(0, 100);
+// console.dir(randomInt)
+console.log(randomInt.next());
+console.log(randomInt.next());
+console.log(randomInt.next());
+console.log(randomInt.next());
+
+console.log("2-", [...take(randomInt, 5)]);
+
+console.log("3-",[...take(filter(randomInt, (el: number) => el > 30), 15)]);
+
+console.log("4-", [...enumerate(randomInt, 5)]);
+
+console.log("5-");
+const symbolRange = new Range('a', 'f');
+
+console.log(Array.from(symbolRange)); // ['a', 'b', 'c', 'd', 'e', 'f']
+console.log(Array.from(symbolRange.reverse()));
+
+const numberRange = new Range(-5, 1);
+
+console.log(Array.from(numberRange));
+
+console.log(Array.from(numberRange.reverse())); // [1, 0, -1, -2, -3, -4, -5]
+
+console.log("6-");
+// console.dir([1,2][Symbol.iterator]())
+// for (let el of new Set([3, 4])) {
+//   console.log("final el ", el)
+// }
+
+for (let el of seq([1, 2], new Set([3, 4]), 'bla')) {
+  console.log("final el ", el)
+}
+// console.log([...seq([1, 2], new Set([3, 4]), 'bla')]); 
