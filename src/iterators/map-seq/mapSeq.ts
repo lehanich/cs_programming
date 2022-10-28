@@ -1,6 +1,6 @@
 
 export default function(array: number[], funcs: Function[]): IterableIterator<number> {
-  let cursor = array[Symbol.iterator]();
+  let cursor: IterableIterator<number> = array[Symbol.iterator]();
 
   return {
     [Symbol.iterator](): IterableIterator<number> {
@@ -8,7 +8,7 @@ export default function(array: number[], funcs: Function[]): IterableIterator<nu
     },
 
     next(): IteratorResult<number> {
-      let el = cursor.next()
+      let el: IteratorResult<number> = cursor.next()
       let newValue:number = el.value;
 
       if (el.done) {
