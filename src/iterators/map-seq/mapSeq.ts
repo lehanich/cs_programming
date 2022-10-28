@@ -8,7 +8,7 @@ export default function(array: number[], funcs: Function[]): IterableIterator<nu
     },
 
     next(): IteratorResult<number> {
-      let el: IteratorResult<number> = cursor.next()
+      let el: IteratorResult<number> = cursor.next();
       let newValue:number = el.value;
 
       if (el.done) {
