@@ -19,6 +19,7 @@ import enumerate from "./iterators/enumerate/enumerate";
 import Range from "./iterators/range/range";
 import seq from "./iterators/seq/seq";
 import zip from "./iterators/zip/zip";
+import mapSeq from "./iterators/map-seq/mapSeq";
 
 const list = new LinkedList();
 
@@ -268,3 +269,6 @@ console.log([...seq([1, 2], new Set([3, 4]), 'bla')]);
 
 console.log("7-");
 console.log(...zip([1, 2], new Set([3, 4]), 'bl'));
+
+console.log("8-")
+console.log(...mapSeq([1, 2, 3], [(el:any) => el * 2, (el:any) => el - 1])); // [1, 3, 5]
