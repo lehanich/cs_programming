@@ -1,15 +1,15 @@
 
-export default function(array: any[], funcs: Function[]): IterableIterator<undefined> {
+export default function(array: number[], funcs: Function[]): IterableIterator<number> {
   let cursor = array[Symbol.iterator]();
 
   return {
-    [Symbol.iterator](): IterableIterator<undefined> {
+    [Symbol.iterator](): IterableIterator<number> {
       return this;
     },
 
-    next(): IteratorResult<any> {
+    next(): IteratorResult<number> {
       let el = cursor.next()
-      let newValue = el.value;
+      let newValue:number = el.value;
 
       if (el.done) {
         return { done: true, value: null }
