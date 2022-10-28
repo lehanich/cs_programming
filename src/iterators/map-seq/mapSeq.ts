@@ -8,15 +8,14 @@ export default function(array: any[], funcs: Function[]): IterableIterator<undef
     },
 
     next(): IteratorResult<any> {
-      let funcsArr = funcs;
       let el = cursor.next()
       let newValue = el.value;
 
       if (el.done) {
-        return {done: true, value: null}
+        return { done: true, value: null }
       }
 
-      for (let func of funcsArr) {
+      for (let func of funcs) {
         newValue = func(newValue);
       }
 
