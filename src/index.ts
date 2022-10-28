@@ -18,6 +18,7 @@ import filter from "./iterators/filter/filter";
 import enumerate from "./iterators/enumerate/enumerate";
 import Range from "./iterators/range/range";
 import seq from "./iterators/seq/seq";
+import zip from "./iterators/zip/zip";
 
 const list = new LinkedList();
 
@@ -260,7 +261,10 @@ console.log("6-");
 //   console.log("final el ", el)
 // }
 
-for (let el of seq([1, 2], new Set([3, 4]), 'bla')) {
-  console.log("final el ", el)
-}
-// console.log([...seq([1, 2], new Set([3, 4]), 'bla')]); 
+// for (let el of seq([1, 2], new Set([3, 4]), 'bla')) {
+//   console.log("final el ", el)
+// }
+console.log([...seq([1, 2], new Set([3, 4]), 'bla')]); 
+
+console.log("7-");
+console.log(...zip([1, 2], new Set([3, 4]), 'bl'));
