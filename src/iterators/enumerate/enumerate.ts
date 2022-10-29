@@ -1,13 +1,13 @@
-type Enum<T> = [number, T]
+export type Enum<T> = [number, T]
 
-export default function(object: IterableIterator<Object>, col: number): IterableIterator<Object> {
+export default function(object: IterableIterator<Object>, col: number): IterableIterator<Enum<unknown>> {
   let index = 0;
 
   return {
-    [Symbol.iterator](): IterableIterator<Object> {
+    [Symbol.iterator](): IterableIterator<Enum<unknown>> {
       return this;
     },
-    next(): IteratorResult<Enum<Object>> {
+    next(): IteratorResult<Enum<unknown>> {
       col--;
 
       return  (col > -1) ?
