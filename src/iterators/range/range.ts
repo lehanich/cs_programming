@@ -1,6 +1,6 @@
-type Element = string | number | null | undefined;
+export type Element = string | number | null | undefined;
 
-export default class Range implements Iterable<Element>  {
+export default class Range implements Iterable<Element>  { //<T extends string | number>
   #start: number = 0;
   #end: number = 0;
   #isChar: Boolean = false;
@@ -16,7 +16,11 @@ export default class Range implements Iterable<Element>  {
     }
   }
 
-  [Symbol.iterator]() {
+  get length() {
+    return this.#end - this.#start + 1;
+  }
+
+  [Symbol.iterator]() { // : IterableIterator<T extends number? number : string>
     let value = this.#start - 1;
     let that = this
 
