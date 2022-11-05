@@ -20,7 +20,11 @@ import Range from "./iterators/range/range";
 import seq from "./iterators/seq/seq";
 import zip from "./iterators/zip/zip";
 import mapSeq from "./iterators/map-seq/mapSeq";
-
+import forEach from "./generators/for-each-2/for-each";
+import Scheduler from "./generators/for-each-2/scheduler";
+import numberParser from "./generators/parser/numberParser";
+import Result from "./error-containers/result/result";
+import exec from "./error-containers/async-func/exec"
 const list = new LinkedList();
 
 list.add(1);
@@ -272,3 +276,203 @@ console.log(...zip([1, 2], new Set([3, 4]), 'bl'));
 
 console.log("8-")
 console.log(...mapSeq([1, 2, 3], [(el:any) => el * 2, (el:any) => el - 1])); // [1, 3, 5]
+
+// ---
+
+console.log("generators");
+let total = 0;
+
+// let a1 = [1,2,3,4,5,6,7,8,9,10]
+// let a2 = [11,12,13,14,15,16,17,18,19,20]
+// let a3 = [31,32,33,34,35,36,37,38,39,30]
+
+Scheduler.init({timeout: 10, delay: 100, priority: "PriorityQ"});
+let a1 = 0
+let a2 = 0
+let a3  = 0
+forEach(new Array(1000), () => {//new Array(10)
+  total++;
+  console.log("i", total)
+  console.log("a1", a1++)
+}, { priority: "low" })
+.then(() => {
+  console.log("finish");
+  console.log(total);
+})
+.catch((err) => {
+  console.log("Error 1");
+  console.log(err);
+});
+
+forEach(new Array(1000), () => {
+  total++;
+  console.log("j", total)
+  console.log("a2", a2++)
+}, { priority: "normal" })
+.then(() => {
+  console.log("finish");
+  console.log(total);
+})
+.catch((err) => {
+  console.log("Error 2");
+  console.log(err);
+});
+
+forEach(new Array(1000), () => {
+  total++;
+  console.log("l", total)
+  console.log("a3", a3++)
+}, { priority: "height" })
+.then(() => {
+  console.log("finish");
+  console.log(total);
+})
+.catch((err) => {
+  console.log("Error 2");
+  console.log(err);
+});
+
+
+
+
+// const parser = numberParser();
+
+// console.log(parser.next('-'));   // {value: '-', done: false}
+// console.log(parser.next('14'));  // {value: 14, done: false}
+// console.log(parser.next('.'));   // {value: '.', done: false}
+// console.log(parser.next('53'));  // {value: 53, done: false}
+// console.log(parser.next('e-'));  // {value: 'e-', done: false}
+// console.log(parser.next('4')); // {value: 454, done: false}
+// console.log(parser.return());    // {value: -14.53e-454, done: true}
+
+
+
+// let a=[1,2,3,4,5,6,7,8,9]
+
+// function* iter2(): any {
+//   let status
+//   let now = new Date().getTime();
+
+//   // for (let item of this.#iterable) {
+//   let cursor = a[Symbol.iterator]();
+//   let i=0;
+//   while (true) {
+//     if (status === "run") {
+//       console.log("status run ")
+//       console.log("execute")
+//       let item = cursor.next()
+//       i = i++
+//       console.log(`iter ${i}`)
+//       if (item.done) {
+//         console.log("delete worker fron schedule")
+
+  
+//         return {done:true}
+//       }
+//       status = yield item
+//     } else {
+//       console.log("status waiting ")
+//       status = yield
+//     }
+
+//     // if (this.#state === "waiting") {
+//     //   console.log("worker waiting");
+//     //   status = yield;
+//     //   console.log("(old wait) yield ", status)
+      
+//     // } else {
+//     //   console.log("worker run");
+//     //   status = yield;
+//     //   console.log("(old run) yield ", status)
+//     //   // this.#worker.next();
+//     // }
+//     // if (new Date().getTime() < now + this.#timeout) {
+//     //   setTimeout(() => {
+//     //     console.log("wake")
+//     //     // this.iterate.bind(resolve, reject);
+//     //     now = new Date().getTime();
+//     //     this.#worker.next();
+//     //   }, this.#timeout);
+
+//     // yield;
+//     //   console.log("sleep")
+//     // }
+//   }
+//   // console.log("delete worker fron schedule")
+//   // this.#sheduler.deleteWorker(this)
+//   // resolve()
+// }
+
+// let i = iter2()
+// i.next();
+
+// import Scheduler from "./generators/for-each-3/scheduler";
+
+// let scheduler = new Scheduler(i, {priority: "normal"});
+
+// scheduler.start();
+//--
+
+// console.log(0,i.next())
+// console.log(1,i.next("run"))
+// console.log(2,i.next("run"))
+// console.log(3,i.next("waiting"))
+// console.log(4,i.next("waiting"))
+// console.log(5,i.next("run"))
+// console.log(6,i.next("run"))
+
+// let now = new Date().getTime();
+// console.log(1)
+// if (new Date().getTime() < now + 1000) {
+//   // console.log("lnegth workers " + Scheduler.#instance!.workers.length)
+//   console.log(4)
+//   setTimeout(() => {
+//     console.log("wait")
+//     // console.log(`schedule waik ${this.#delay}ms `, new Date().getTime() , now + this.#delay)
+//     now = new Date().getTime();
+    
+
+//     console.log(2)
+
+    
+//   }, 1000);
+// }
+// workTime(20)
+// console.log("start")
+// console.log(3)
+
+// function workTime(sleepDuration: number): void {
+//   var now = new Date().getTime();
+
+//   while (new Date().getTime() < now + sleepDuration){ 
+//     /* Do nothing */ 
+//     console.log(new Date().getTime())
+//   }
+// }
+
+// console.log(1)
+// const result = new Result(() => 10);
+// result.map((el:any) => el * 2).flatMap((el:any) => Result.error(el)).catch((err: any) => console.log(err));
+// console.log("final")
+
+// console.log(2)
+// type T = any
+// exec(function* main():Generator<any> {
+//   const result = new Result(() => 10);
+//   console.log(4, yield result.map((el) => el * 2));
+//   console.log(4, yield result.map((el) => el * 2));
+//   console.log(5, yield Promise.resolve(60));
+//   console.log(4, yield result.map((el) => el * 3));
+//   console.log(5, yield Promise.resolve(10));
+//   console.log(4, yield result.map((el) => el * 1));
+// });
+// console.log(3)
+// console.log(1,1)
+// async function foo() {
+//   console.log(2)
+//   await console.log(10)
+//   await console.log(12)
+//   console.log(3)
+// }
+// console.log(foo())
+// console.log(4)
