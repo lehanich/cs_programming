@@ -24,6 +24,7 @@ export default class PriorityQ<T> {
         case "low":
           this.#queArray[this.#length - 1] = item
           break;
+
         case "normal":
           let insert = Math.floor(this.#length / 2)
 
@@ -33,6 +34,7 @@ export default class PriorityQ<T> {
 
           this.#queArray[insert] = item;
           break;
+
         case "height":
           for (j=this.#length - 1; j >= 0; j--) {
             this.#queArray[j+1] = this.#queArray[j]
@@ -42,7 +44,6 @@ export default class PriorityQ<T> {
           break;
         default: 
 
-
       }
     }
 
@@ -51,27 +52,21 @@ export default class PriorityQ<T> {
 
   remove(delWorker: T) {
     let i = 0;
-      console.dir(this.#queArray)
-      let array = new Array(this.#maxSize)
-      for (let worker of this.#queArray) {
-        console.log("delWorker:")
-        console.dir(worker)
-        if (i>= this.#length) {
-          break;
-        }
+    let array = new Array(this.#maxSize)
 
-        if (worker && worker != undefined && worker[1] === delWorker) {
-          // delete Scheduler.#instance!.workers[i];
-          // break;
-        } else {
-          array[i] = worker
-          i++
-        }
+    for (let worker of this.#queArray) {
+      if (i>= this.#length) {
+        break;
       }
-      this.#length--;
-      this.#queArray = array
-      console.log(`after del ${this.#length}`) 
-      console.dir(this.#queArray)
+
+      if (worker && worker != undefined && worker[1] !== delWorker) {
+        array[i] = worker
+        i++
+      }
+    }
+
+    this.#length--;
+    this.#queArray = array
   }
 
   peekMin() {

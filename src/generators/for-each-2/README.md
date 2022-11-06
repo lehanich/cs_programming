@@ -1,42 +1,54 @@
 # Функция forEach
 
 ## Функция обходит любой Iterable объект любого размера. Работа функции не вызывает фризов. Функция возвращает Promise.
-Таймаут между итерациями 100мс (для работы функции) + 100мс пауза для работы системы, всего 200мс
 
-принимает на вход:
-объект
-колбек
-параметры
+Модуль состоит из:
+
+Scheduler - планировщик. Синглтон, который следит и запускает таски. Функция инициализации init на вход принимает объект с 
+timeout - время выполнения очереди, delay - таймаут между очередями, priority - алгоритм прироитезации. Поддерживается "PriorityQ" - приоритетная очередь иначе по-умолчанию сработает "Vector" - очередь в порядке запуска функции forEach
+
+PriorityQ - простейщая прироритетная очередь. Планировщик помещает таски в очередь на основании приоритета low, normal, height.
+
+TaskManager - управление конкретной функцией forEach (запуск итерации (run), ожидание (waiting))
+
+forEach(IterableObject, Callback, options) - функция forEach. 
+options - объект, поддерживается параметр priority со значением low, normal, height
+
+Таймаут между итерациями рассчитывает Scheduler на основании приоритетов. По формуле (timeout / длина_очереди) * time%
+
+time% - 50% для height, 30% для normal, 20% для low
+
+После каждого прохода приоритетной очереди, планировщик ждет delay мс
+
+## Инициализация планировщика. 
+
+```js
+Scheduler.init({timeout: 10, delay: 100, priority: "PriorityQ"});
+```
+
+## Пример запуска функции forEach
 
 ```js
 let total = 0;
 
-forEach(new Array(50e7), () => {
-  total++;
-  console.log("i", total)
-}, options).then(() => console.log("finish"))
+  forEach(new Array(50e7), () => {
+    total++;
+    console.log("i", total)
+  }, { priority: "low" })
+  .then(() => console.log("finish"))
   .catch((err) => console.log(err));
 
 console.log(total);
 ```
 
-## Дополнительные модули
-
-### Scheduler
-
-```js
-Scheduler.init({timer: 80, delay: 30 });
-```
-
-### TaskWorker
-
-
-
 ## Потмер запуска нескольких экземпляров функции
 
-Несколько таких вызовов гарантировано не вызывали фризов, т.к. каждая итерация вызываетсся последовательно. Все функции выполняются последовательно по-очереди.
-
 ```js
+import forEach from "./for-each";
+import Scheduler from "./scheduler";
+
+Scheduler.init({timeout: 10, delay: 100, priority: "PriorityQ"});
+
 let total = 0;
 
 forEach(new Array(50e7), () => {
@@ -67,23 +79,15 @@ console.log(total);
 ```js
 let total = 0;
 
-forEach(new Array(50e9), {priority: 'critical'}, () => {
+forEach(new Array(50e9), { priority: 'critical' }, () => {
   total++;
 });
 
-forEach(new Array(50e9), {priority: 'high'}, () => {
+forEach(new Array(50e9), { priority: 'high' }, () => {
   total++;
 });
 
-forEach(new Array(50e9), {priority: 'low'}, () => {
-  total++;
-});
-
-forEach(new Array(50e9), () => {
-  total++;
-});
-
-forEach(new Array(50e9), () => {
+forEach(new Array(50e9), { priority: 'low' }, () => {
   total++;
 });
 

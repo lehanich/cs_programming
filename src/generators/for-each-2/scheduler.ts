@@ -15,7 +15,6 @@ export default class Scheduler<T> {
 
   constructor (worker: any, options: any) {
     if (Scheduler.#instance == null || options.init) {
-      console.log("schedule is null")
       Scheduler.#instance = this;
 
       if (options.priority === "PriorityQ") {
@@ -47,7 +46,6 @@ export default class Scheduler<T> {
       Scheduler.#instance.workers.insert(worker, options.priority);
     } else {
       Scheduler.#instance!.workers.push([options.priority, worker]);
-      console.log("add worker", Scheduler.#instance!.workers)
     }
   }
 
@@ -56,25 +54,20 @@ export default class Scheduler<T> {
       Scheduler.#instance.workers.remove(delWorker);
     } else {
       let i = 0;
-      console.dir(Scheduler.#instance!.workers)
       let array = []
+
       for (let worker of Scheduler.#instance!.workers) {
-        console.log("delWorker:")
-        console.dir(worker)
-        if (worker && worker[1] === delWorker) {
-          // delete Scheduler.#instance!.workers[i];
-          // break;
-        } else {
+        if (worker && worker[1] !== delWorker) {
           array.push(worker)
         }
         i++
       }
+
       Scheduler.#instance!.workers = array
     }
 
     if (Scheduler.#instance!.workers.length === 0) {
       let status = Scheduler.#instance!.cursor.next("stop");
-      console.log(status)
     }
   }
 
@@ -87,12 +80,15 @@ export default class Scheduler<T> {
       case "height":
         time = Math.ceil(this.#timeout / length * 50 / 100);
         break;
+
       case "normal":
         time = Math.ceil(this.#timeout / length * 30 / 100);
         break;
+
       case "low":
         time = Math.ceil(this.#timeout / length * 20 / 100);
         break;
+
       default:
         return Math.ceil(this.#timeout / length)
     }
@@ -103,66 +99,42 @@ export default class Scheduler<T> {
   *execute(): any {
     let now = new Date().getTime();
     let status: any
-    console.log("start scheduler")
-    console.dir(Scheduler.#instance!.workers)
-
-    console.log("timeout", this.timeout)
 
     while (Scheduler.#instance!.workers.length > 0) {
-    // while (true) {
-        if (new Date().getTime() > now + this.#timeout) {
-          console.log("lnegth workers " + Scheduler.#instance!.workers.length)
+      if (new Date().getTime() > now + this.#timeout) {
+        setTimeout(() => {
+          now = new Date().getTime();
 
-          setTimeout(() => {
-            console.log(`schedule waik ${this.#delay}ms `, new Date().getTime() , now + this.#delay)
-            now = new Date().getTime();
+          for (let i=0; i < Scheduler.#instance!.workers.length; i++) {
+            let worker: any;
 
-                for (let i=0; i < Scheduler.#instance!.workers.length; i++) {
-                  let worker: any;
+            if (Scheduler.queueType = "PriorityQ") {
+              worker = Scheduler.#instance!.workers.peek(i);
+            } else {
+              worker = Scheduler.#instance!.workers[i];
+            }
 
-                  if (Scheduler.queueType = "PriorityQ") {
-                    worker = Scheduler.#instance!.workers.peek(i);
-                  } else {
-                    worker = Scheduler.#instance!.workers[i];
-                  }
+            if (worker) {
+              let now2 = new Date().getTime();
 
-                  if (worker) {
-                    let now2 = new Date().getTime();
+              while (new Date().getTime() < now2 + this.timeout(worker[0])) {
+                this.updateState(worker[1], "run");
+              }
 
-                    // setTimeout(() => {
-                    //       console.log(`task item wake for ${this.timeout(worker[0])}ms`, now);
-                    //       this.updateState(worker[1], "run");
-                    //       now2 = new Date().getTime();
-
-                    //       // while (new Date().getTime() < now2 + this.timeout(worker[0])){
-                    //       //   this.updateState(worker[1], "run");
-                    //       // }
-                    // }, this.#timeout - this.timeout(worker[0]));
-
-                    while (new Date().getTime() < now2 + this.timeout(worker[0])) {
-                      console.log(`task item wake for ${this.timeout(worker[0])}ms`, now);
-                      this.updateState(worker[1], "run");
-                    }
-        
-                    console.log("task item waiting");
-                    this.updateState(worker[1], "waiting");
-                  }
-                }
-            Scheduler.#instance!.cursor.next();
-          }, this.#delay);
-          
-          status = yield "";
-          console.log(`workers length ${Scheduler.#instance!.workers.length}`)
-          console.log(`schedule sleep ${status}`)
-
-          if (status === "stop") {
-            console.log("stop!");
-            return "done";
+              this.updateState(worker[1], "waiting");
+            }
           }
-        }
-    }
 
-    console.log("end schedule generator")
+          Scheduler.#instance!.cursor.next();
+        }, this.#delay);
+
+        status = yield "";
+
+        if (status === "stop") {
+          return "done";
+        }
+      }
+    }
   }
 
   updateState(worker: any,  state: any) {
@@ -182,6 +154,7 @@ export default class Scheduler<T> {
     }
   }
 
+  // deprecated
   #sleepTime(sleepDuration: number): void {
     var now = new Date().getTime();
   

@@ -38,19 +38,13 @@ export default class TaskWorker<T> {
 
     while (true) {
       if (status === "run") {
-        console.log("status run ");
-
         let item = cursor.next();
 
-        console.log(`item `, item);
-        // console.dir(item)
-
         if (item.done) {
-          console.log("delete worker fron schedule");
           this.#sheduler.deleteWorker(this);
-          console.log("resolve")
           resolve();
-          return {done:true};
+
+          return { done:true };
         }
 
         try {
@@ -61,11 +55,10 @@ export default class TaskWorker<T> {
 
         status = yield item;
       } else {
-        console.log("status waiting ")
         status = yield;
       }
     }
-    console.log("delete worker fron schedule")
+
     this.#sheduler.deleteWorker(this)
     resolve()
   }
@@ -74,10 +67,10 @@ export default class TaskWorker<T> {
     this.#sheduler.start()
     this.#worker = this.iter(resolve, reject);
     let status = this.#worker.next();
+
     if (status.done) {
       resolve();
     }
-    // resolve();
   }
 
   set state(state: State) {
@@ -86,9 +79,5 @@ export default class TaskWorker<T> {
     if (this.#worker) {
       this.#worker.next(state)
     }
-  }
-
-  notifyScheduler() {
-
   }
 }
