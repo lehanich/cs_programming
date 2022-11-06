@@ -35,6 +35,7 @@ export default class TaskWorker<T> {
   *iter(resolve: any, reject: any): any {
     let status;
     let cursor = this.#iterable[Symbol.iterator]();
+    let i=0;
 
     while (true) {
       if (status === "run") {
@@ -48,7 +49,8 @@ export default class TaskWorker<T> {
         }
 
         try {
-          this.#callback();
+          this.#callback(i, item, this.#iterable);
+          i++;
         } catch(err) {
           reject(err);
         }
