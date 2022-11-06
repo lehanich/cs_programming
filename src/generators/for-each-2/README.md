@@ -91,17 +91,35 @@ console.log(total);
 ```js
 let total = 0;
 
-forEach(new Array(50e9), { priority: 'critical' }, () => {
+forEach(new Array(10e7), () => {
   total++;
-});
+  console.log("i", total)
+  console.log("a1", a1++)
+}, { priority: "low" })
+.then(() => {
+  console.log(total);
+})
+.catch((err) => console.log(err));
 
-forEach(new Array(50e9), { priority: 'high' }, () => {
+forEach(new Array(10e7), () => {
   total++;
-});
+  console.log("j", total)
+  console.log("a2", a2++)
+}, { priority: "normal" })
+.then(() => {
+  console.log(total);
+})
+.catch((err) => console.log(err));
 
-forEach(new Array(50e9), { priority: 'low' }, () => {
+forEach(new Array(10e7), () => {
   total++;
-});
+  console.log("l", total)
+  console.log("a3", a3++)
+}, { priority: "height" })
+.then(() => {
+  console.log(total);
+})
+.catch((err) => console.log(err));
 
 console.log(total);
 ```
