@@ -2,11 +2,11 @@ import LinkedList from "./data-structure/LinkedList/LinkedList";
 import Queue from "./data-structure/Queue/Queue";
 import DoubleQueue from "./data-structure/DoubleQueue/DoubleQueue";
 import Stack from "./data-structure/Stack/Stack";
-import Structure from "./Structure/Structure";
+import Structure from "./data-structure/Structure/Structure";
 import DynamicArray from "./data-structure/DynamicArray/DynamicArray";
-import Vector from "./Vector/Vector";
+import Vector from "./data-structure/Vector/Vector";
 import HashMap from "./data-structure/HashMap/HashMap";
-import binarySearch from "./BinarySearch/BinarySearch";
+import binarySearch from "./data-structure/BinarySearch/BinarySearch";
 import BinaryTree from "./data-structure/BinaryTree/BinaryTree";
 import Tree234 from "./data-structure/234-tree/234Tree";
 import BTree from "./data-structure/b-tree/BTree";
@@ -25,6 +25,11 @@ import Scheduler from "./generators/for-each-2/scheduler";
 import numberParser from "./generators/parser/numberParser";
 import Result from "./error-containers/result/result";
 import exec from "./error-containers/async-func/exec"
+import sleep from "./acync-programs/sleep/sleep";
+import timeout from "./acync-programs/timeout/timeout";
+import fetch from "node-fetch";
+import { setImmediate, clearImmediate } from "./acync-programs/immediate/index";
+
 const list = new LinkedList();
 
 list.add(1);
@@ -286,51 +291,51 @@ let total = 0;
 // let a2 = [11,12,13,14,15,16,17,18,19,20]
 // let a3 = [31,32,33,34,35,36,37,38,39,30]
 
-Scheduler.init({timeout: 10, delay: 100, priority: "PriorityQ"});
-let a1 = 0
-let a2 = 0
-let a3  = 0
-forEach(new Array(1000), () => {//new Array(10)
-  total++;
-  console.log("i", total)
-  console.log("a1", a1++)
-}, { priority: "low" })
-.then(() => {
-  console.log("finish");
-  console.log(total);
-})
-.catch((err) => {
-  console.log("Error 1");
-  console.log(err);
-});
+// Scheduler.init({timeout: 10, delay: 100, priority: "PriorityQ"});
+// let a1 = 0
+// let a2 = 0
+// let a3  = 0
+// forEach(new Array(1000), () => {//new Array(10)
+//   total++;
+//   console.log("i", total)
+//   console.log("a1", a1++)
+// }, { priority: "low" })
+// .then(() => {
+//   console.log("finish");
+//   console.log(total);
+// })
+// .catch((err) => {
+//   console.log("Error 1");
+//   console.log(err);
+// });
 
-forEach(new Array(1000), () => {
-  total++;
-  console.log("j", total)
-  console.log("a2", a2++)
-}, { priority: "normal" })
-.then(() => {
-  console.log("finish");
-  console.log(total);
-})
-.catch((err) => {
-  console.log("Error 2");
-  console.log(err);
-});
+// forEach(new Array(1000), () => {
+//   total++;
+//   console.log("j", total)
+//   console.log("a2", a2++)
+// }, { priority: "normal" })
+// .then(() => {
+//   console.log("finish");
+//   console.log(total);
+// })
+// .catch((err) => {
+//   console.log("Error 2");
+//   console.log(err);
+// });
 
-forEach(new Array(1000), () => {
-  total++;
-  console.log("l", total)
-  console.log("a3", a3++)
-}, { priority: "height" })
-.then(() => {
-  console.log("finish");
-  console.log(total);
-})
-.catch((err) => {
-  console.log("Error 2");
-  console.log(err);
-});
+// forEach(new Array(1000), () => {
+//   total++;
+//   console.log("l", total)
+//   console.log("a3", a3++)
+// }, { priority: "height" })
+// .then(() => {
+//   console.log("finish");
+//   console.log(total);
+// })
+// .catch((err) => {
+//   console.log("Error 2");
+//   console.log(err);
+// });
 
 
 
@@ -345,110 +350,7 @@ forEach(new Array(1000), () => {
 // console.log(parser.next('4')); // {value: 454, done: false}
 // console.log(parser.return());    // {value: -14.53e-454, done: true}
 
-
-
-// let a=[1,2,3,4,5,6,7,8,9]
-
-// function* iter2(): any {
-//   let status
-//   let now = new Date().getTime();
-
-//   // for (let item of this.#iterable) {
-//   let cursor = a[Symbol.iterator]();
-//   let i=0;
-//   while (true) {
-//     if (status === "run") {
-//       console.log("status run ")
-//       console.log("execute")
-//       let item = cursor.next()
-//       i = i++
-//       console.log(`iter ${i}`)
-//       if (item.done) {
-//         console.log("delete worker fron schedule")
-
-  
-//         return {done:true}
-//       }
-//       status = yield item
-//     } else {
-//       console.log("status waiting ")
-//       status = yield
-//     }
-
-//     // if (this.#state === "waiting") {
-//     //   console.log("worker waiting");
-//     //   status = yield;
-//     //   console.log("(old wait) yield ", status)
-      
-//     // } else {
-//     //   console.log("worker run");
-//     //   status = yield;
-//     //   console.log("(old run) yield ", status)
-//     //   // this.#worker.next();
-//     // }
-//     // if (new Date().getTime() < now + this.#timeout) {
-//     //   setTimeout(() => {
-//     //     console.log("wake")
-//     //     // this.iterate.bind(resolve, reject);
-//     //     now = new Date().getTime();
-//     //     this.#worker.next();
-//     //   }, this.#timeout);
-
-//     // yield;
-//     //   console.log("sleep")
-//     // }
-//   }
-//   // console.log("delete worker fron schedule")
-//   // this.#sheduler.deleteWorker(this)
-//   // resolve()
-// }
-
-// let i = iter2()
-// i.next();
-
-// import Scheduler from "./generators/for-each-3/scheduler";
-
-// let scheduler = new Scheduler(i, {priority: "normal"});
-
-// scheduler.start();
-//--
-
-// console.log(0,i.next())
-// console.log(1,i.next("run"))
-// console.log(2,i.next("run"))
-// console.log(3,i.next("waiting"))
-// console.log(4,i.next("waiting"))
-// console.log(5,i.next("run"))
-// console.log(6,i.next("run"))
-
-// let now = new Date().getTime();
-// console.log(1)
-// if (new Date().getTime() < now + 1000) {
-//   // console.log("lnegth workers " + Scheduler.#instance!.workers.length)
-//   console.log(4)
-//   setTimeout(() => {
-//     console.log("wait")
-//     // console.log(`schedule waik ${this.#delay}ms `, new Date().getTime() , now + this.#delay)
-//     now = new Date().getTime();
-    
-
-//     console.log(2)
-
-    
-//   }, 1000);
-// }
-// workTime(20)
-// console.log("start")
-// console.log(3)
-
-// function workTime(sleepDuration: number): void {
-//   var now = new Date().getTime();
-
-//   while (new Date().getTime() < now + sleepDuration){ 
-//     /* Do nothing */ 
-//     console.log(new Date().getTime())
-//   }
-// }
+console.log("Containers & Errors")
 
 // console.log(1)
 // const result = new Result(() => 10);
@@ -476,3 +378,30 @@ forEach(new Array(1000), () => {
 // }
 // console.log(foo())
 // console.log(4)
+
+console.log("async programs");
+
+// let now = new Date().getTime();
+// console.log(1, now)
+
+// sleep(1000).then(() => {
+//   console.log(`I'am awake!`);
+//   now = new Date().getTime();
+//   console.log(2, now)
+// });
+
+console.log("start timeout")
+
+timeout(fetch('http://rbc.ru'), 10).then(() => console.log("test1")).catch((err) => console.error("error 2"));
+
+console.log("Immediate")
+
+let task = setImmediate((timeout:any) => {
+  console.log(33, new Date().getTime());
+  setTimeout(() => console.log("gggg"), 3000)
+}, 1000)
+
+// setTimeout(() => {
+clearImmediate(task);
+console.log(44, new Date().getTime());
+// },500);
