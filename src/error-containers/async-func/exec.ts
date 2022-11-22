@@ -1,5 +1,4 @@
 import Result from "../result/result"
-type T = any;
 
 export default function exec(fn: () => Generator<any>): void { // Result<T>
   let gen = fn();

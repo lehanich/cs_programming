@@ -11,7 +11,6 @@ exec(function* main() {
 });
 ```
 
-
 ```js
 exec(function* main() {
   const result = new Result(() => 10);
