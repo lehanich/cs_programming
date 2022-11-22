@@ -1,46 +1,46 @@
-import { Priority } from "./interface";
+import { Priority, StrategyAdapter } from "./interface";
 
 type I = [Priority, any];
 
-export default class PriorityQ<T> {
+export default class PriorityQ<T> implements StrategyAdapter {
   #maxSize: number = 100;
-  #queArray: I[] = new Array(100);
+  #queueArray: I[] = new Array(100);
   #length: number = 0;
 
   constructor(size: number) {
     this.#maxSize = size;
-    this.#queArray = new Array(size);
+    this.#queueArray = new Array(size);
     this.#length = 0;
   }
 
-  insert(value: any, priority: Priority) {
+  insert(value: any, priority: Priority): void {
     let j: number;
     let item: I = [priority, value];
 
     if (this.#length ===0) {
-      this.#queArray[0] = item;
+      this.#queueArray[0] = item;
     } else {
       switch(priority) {
         case "low":
-          this.#queArray[this.#length - 1] = item
+          this.#queueArray[this.#length] = item
           break;
 
         case "normal":
           let insert = Math.floor(this.#length / 2)
 
           for (j=this.#length - 1; j >= insert; j--) {
-            this.#queArray[j+1] = this.#queArray[j]
+            this.#queueArray[j+1] = this.#queueArray[j]
           }
 
-          this.#queArray[insert] = item;
+          this.#queueArray[insert] = item;
           break;
 
         case "height":
           for (j=this.#length - 1; j >= 0; j--) {
-            this.#queArray[j+1] = this.#queArray[j]
+            this.#queueArray[j+1] = this.#queueArray[j]
           }
 
-          this.#queArray[0] = item;
+          this.#queueArray[0] = item;
           break;
         default: 
 
@@ -50,11 +50,11 @@ export default class PriorityQ<T> {
     this.#length++;
   }
 
-  remove(delWorker: T) {
+  remove(delWorker: T): void {
     let i = 0;
     let array = new Array(this.#maxSize)
 
-    for (let worker of this.#queArray) {
+    for (let worker of this.#queueArray) {
       if (i>= this.#length) {
         break;
       }
@@ -66,19 +66,19 @@ export default class PriorityQ<T> {
     }
 
     this.#length--;
-    this.#queArray = array
+    this.#queueArray = array
   }
 
   peekMin() {
-    return this.#queArray[this.#length - 1]
+    return this.#queueArray[this.#length - 1]
   }
 
   peekMax() {
-    return this.#queArray[0]
+    return this.#queueArray[0]
   }
 
   peek(i: number) {
-    return this.#queArray[i]
+    return this.#queueArray[i]
   }
 
   isEmpty() {

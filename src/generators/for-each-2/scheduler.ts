@@ -1,5 +1,7 @@
 import { Priority } from "./interface";
 import PriorityQ from "./priority-q";
+import StandartQ from "./stadart-q";
+import { Strategy } from "./strategy";
 
 type I = any;
 
@@ -19,10 +21,10 @@ export default class Scheduler<T> {
 
       if (options.priority === "PriorityQ") {
         Scheduler.queueType = "PriorityQ";
-        Scheduler.#instance.workers = new PriorityQ(100);
+        Scheduler.#instance.workers = new Strategy(new PriorityQ(100));
       } else {
         Scheduler.queueType = "Vector";
-        Scheduler.#instance.workers = [];
+        Scheduler.#instance.workers = new Strategy(new StandartQ());
       }
     }
 
@@ -42,29 +44,11 @@ export default class Scheduler<T> {
   }
 
   addWorker(worker: any, options: any) {
-    if (Scheduler.queueType = "PriorityQ") {
-      Scheduler.#instance.workers.insert(worker, options.priority);
-    } else {
-      Scheduler.#instance!.workers.push([options.priority, worker]);
-    }
+    Scheduler.#instance.workers.insert(worker, options.priority);
   }
 
   deleteWorker(delWorker: any) {
-    if (Scheduler.queueType = "PriorityQ") {
-      Scheduler.#instance.workers.remove(delWorker);
-    } else {
-      let i = 0;
-      let array = []
-
-      for (let worker of Scheduler.#instance!.workers) {
-        if (worker && worker[1] !== delWorker) {
-          array.push(worker)
-        }
-        i++
-      }
-
-      Scheduler.#instance!.workers = array
-    }
+    Scheduler.#instance.workers.remove(delWorker);
 
     if (Scheduler.#instance!.workers.length === 0) {
       let status = Scheduler.#instance!.cursor.next("stop");
@@ -108,11 +92,7 @@ export default class Scheduler<T> {
           for (let i=0; i < Scheduler.#instance!.workers.length; i++) {
             let worker: any;
 
-            if (Scheduler.queueType = "PriorityQ") {
-              worker = Scheduler.#instance!.workers.peek(i);
-            } else {
-              worker = Scheduler.#instance!.workers[i];
-            }
+            worker = Scheduler.#instance!.workers.peek(i);
 
             if (worker) {
               let now2 = new Date().getTime();
