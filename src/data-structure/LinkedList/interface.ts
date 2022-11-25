@@ -7,7 +7,7 @@ export interface LinkedList<T> {
   insertFirst(value: ListNodeVal<T>): LinkedList<T>;
   deleteFirst(): ListNodeLink<T>;
   deleteLast(): ListNodeLink<T>;
-  find(key: number): ListNodeLink<T>;
+  find(key: T): ListNodeLink<T>;
 
   [Symbol.iterator](): Iterator<T>;
   // deleteElement():;

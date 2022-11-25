@@ -46,7 +46,7 @@ export default class LinkedList<T> implements ILinkedList<T> {
     }
   }
 
-  find(key: number): ListNodeLink<T> {
+  find(key: T): ListNodeLink<T> {
     let current: ListNodeLink<T> = this.first;
 
     while (current?.value !== key) {
