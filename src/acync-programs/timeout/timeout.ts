@@ -7,3 +7,6 @@ export default function timeout(promise: any, timeout: number): Promise<T> {
 
   return Promise.race([sleep, promise]);
 }
+
+// import sleep from "acync-programs/sleep/sleep";
+// const timeout2 = (ms, p) =  Promise.race([p, sleep(ms).then(() => {throw "timeout";})])

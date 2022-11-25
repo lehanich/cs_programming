@@ -33,3 +33,18 @@ class Task {
     this.#active = !this.#active;
   }
 }
+
+///
+// const store = new Set();
+
+// export function setMyImmediate(cb: Function, ...args: [any]): unknown {
+//   const id = store.size;
+
+//   queueMicrotask(() => {
+//     while (task.active) {
+//       task.start(...args);
+//     }
+//   });
+
+//   return task;
+// }
