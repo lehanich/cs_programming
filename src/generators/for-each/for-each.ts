@@ -25,13 +25,13 @@ export default function forEach<T, I extends Iterable<T>>(iterable: I, callback:
 
         if (new Date().getTime() < now + timeout) {
           setTimeout(() => {
-            console.log("wake")
+            // console.log("wake")
             now = new Date().getTime();
             worker.next();
           }, timeout);
 
           yield;
-          console.log("sleep");
+          // console.log("sleep");
         }
       }
 
