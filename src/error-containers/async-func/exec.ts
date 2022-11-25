@@ -38,3 +38,31 @@ export default function exec(fn: () => Generator<any>): void { // Result<T>
     }
   }
 }
+
+export function exec2(value: GeneratorFunction) {
+  const iter = value();
+
+  function iterate(value: any):any {
+    let result;
+
+    try {
+      const step = iter.next(value);
+      result = Result.ok(step.value);
+
+      if (step.done) {
+        return result;;
+      }
+    } catch (error) {
+      result = Result.error(error);
+    }
+
+    return result
+      .flatMap(iterate)
+      .catch(err => {
+        iter.throw(err);
+        return iterate(undefined)
+      })
+  }
+
+  return iterate(undefined);
+}

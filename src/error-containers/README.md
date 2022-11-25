@@ -18,6 +18,8 @@ exec(function* main() {
 
 Необходимо расширить логику async/await из прошлого задания, чтобы сделать её универсальной и добавить поддержку еще нескольких контейнеров.
 
+Thaneble объекты then который работает как flatmap
+
 ```js
 exec(function* main() {
   const result = new Result(() => 10);

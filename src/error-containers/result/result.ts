@@ -1,65 +1,79 @@
 type Data<T> = T ;
-type Err<T> = Error
+// type Err<T> = Error;
+type ResultValue<T> = Result<T> | T;
+type Executor<T> = () => ResultValue<T>;
+type FunctorExecutor<A,R> = (arg: A) => R;
+type MonadExecutor<A,R> = (arg: A) => ResultValue<R>;
+type State = "ok" | "error";
 
-export default class Result<T>  {
+export default class Result<T, E = unknown> { // implements PromiseLike<T>  {
+  static error<E>(error: E): Result<never, E> {
+    return new Result(() => {
+      throw this.error; 
+    })
+  };
+  
+  static ok<T>(value: ResultValue<T>): Result<T> {
+    return new Result(() => value);
+  }
 
   isError: Boolean = false;
-  data?: Data<T>;
-  error?: Err<T> | undefined;
+  readonly data?: T;
+  // readonly unpackedValue?: T;
+  readonly error?: unknown;
+  readonly state: State;
+  // readonly rawValue?: ResultValue<T>;
 
-  constructor(data: () => Data<T> | Err<T>) {
+  // get data(): ResultValue<T> | T | undefined{
+  //   if (this.error !== "error") {
+  //     return this.unpackedValue ?? this.rawValue;
+  //   }
+
+  //   return undefined;
+  // }
+
+  constructor(exec: Executor<T>, unpack: boolean = true) {
     try {
-      const d = data();
+      const result = exec();
 
-      if (d instanceof Result) {
-        this.isError = d.isError;
-
-        if (!this.isError) {
-          this.data = d.unwrap();
-        }
-      } else if (d instanceof Error) {
-        this.isError = true;
-        this.error = <Err<T>>d;
-      } else {
-        this.data = <T>d;
-        this.isError = false;
-      }
+      this.data = unpack ? result instanceof Result ? result.unwrap() : result : cast(result);
+      this.state = "ok";
     } catch (e:any) {
-      this.isError = true;
-      this.error = new Error(e)
-      this.data = undefined;
+      this.state = "error";
+      this.error = e;
     }
   }
 
-  unwrap(): T | Err<T> {
-    if (this.isError) {
-      return <Err<T>>this.error;
-    }
-
-    if (!this.data) {
-      throw new Error("Empty")
+  unwrap() {
+    if (this.state === "error") {
+      throw this.error;
     }
 
     return this.data!;
   }
 
-  map(cb: (arg0: T) => any) {
-    this.isError = false;
-    return new Result(() => cb(<T>this.data) )
+  map<R>(exec: FunctorExecutor<T, R>): Result<R> {
+    if (this.state === "error") {
+      Result.error(this.error)
+    }
+
+    return new Result(() => exec(this.data!), false)
   }
 
-  flatMap(cb: (el: T) => Result<T>): Result<T> {
-    return new Result(() => cb(<T>this.data).unwrap())
+  flatMap<R>(exec: MonadExecutor<T, R>): Result<R> {
+    if (this.state === "error") {
+      Result.error(this.error)
+    }
+
+    return new Result(() => exec(this.data!));
   }
 
-  static error(err: any) {
-    return new Result(() => {
-      throw err
-    }) 
-  }
+  catch<R>(exec: MonadExecutor<unknown, R>): Result<T | R> {
+    if (this.state === "error") {
+      return new Result(() => exec(this.error))
+    }
 
-  catch(cb: (err: T | Err<T>) => any) {
-    return new Result(() => this.isError ? cb(<Err<T>>this.error) : <Data<T>>this.data)
+    return Result.ok(this.data!);
   }
 
   status() {
@@ -67,4 +81,18 @@ export default class Result<T>  {
     return  this.isError ? "Error" : "OK"
     // })
   }
+
+  // then() {
+
+  // }
 }
+
+function cast<T>(value: any): T {
+  return value;
+}
+
+function power (level: number) { // | null , power-обертка с number | null 
+  return level * 2
+}
+
+// Optional.wrap(power)
