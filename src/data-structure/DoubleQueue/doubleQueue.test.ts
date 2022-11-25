@@ -37,8 +37,9 @@ describe("DoubleQueue functions", function () {
 
   it("DoubleQueue ", () => {
     const t = () => {
-      const last = dequeue.pop()
+      const last = dequeue.pop();
     };
+    
     expect(t).toThrow(Error);
   });
 });

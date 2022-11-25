@@ -11,14 +11,14 @@ import {
 export default class DoubleQueue<T> extends Queue<T> implements IDoubleQueue<T> {
   public maxSize: number = 10;
   public length: number = 0;
-  public head: ListNodeLink<T> = null;
-  public rear: ListNodeLink<T> = null;
+  public first: ListNodeLink<T> = null;
+  public last: ListNodeLink<T> = null;
 
   constructor(maxSize: number) {
     super(maxSize);
     this.maxSize = maxSize;
-    this.head = null;
-    this.rear = null;
+    this.first = null;
+    this.last = null;
   }
 
   public pop(): T {
@@ -29,6 +29,7 @@ export default class DoubleQueue<T> extends Queue<T> implements IDoubleQueue<T> 
 
     const value = this.last?.value;
     const oldLast = this.deleteLast();
+    this.syncQueue();
 
     this.length--;
 
@@ -39,20 +40,25 @@ export default class DoubleQueue<T> extends Queue<T> implements IDoubleQueue<T> 
     if (this.length != this.maxSize) {
       this.insertFirst(value)
 
-      if (!this.head) {
-        this.head = this.first;
-      }
+      // if (!this.first) {
+      //   this.first = this.queue.first;
+      // }
       this.length++;
-      this.rear = this.last;
+      this.syncQueue();
     }
   };
 
   public shift(): T {
     const deleteFirst = this.deleteFirst();
-
+    this.syncQueue();
     this.length--;
 
     return <T>deleteFirst?.value;
   };
+
+  protected syncQueue() {
+    this.first = this.queue.first;
+    this.last = this.queue.last;
+  }
 
 }
