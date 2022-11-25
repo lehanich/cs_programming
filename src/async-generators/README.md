@@ -26,7 +26,7 @@
        once(box, 'mousedown'),
    
        every(
-         seq(
+         any(
            on(document.body, 'mousemove'),
            on(box, 'mouseup')
          ),

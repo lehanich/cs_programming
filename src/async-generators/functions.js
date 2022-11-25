@@ -37,11 +37,14 @@ function on(element, event) {
 
         async next() {
           return new Promise((resolve) => {
-            element.addEventListener(event, (e) => {
+            element.addEventListener(event, (e) => { // once true
               resolve({ value: e, done: false });
             });
           });
         }
+        // return() {
+        //   element.removeEventListener
+        // }
       }
     }
   }
@@ -224,7 +227,7 @@ function every(iter) {
 
 function onlyEvent(eventName) {
   fn = (e) => {
-    if (e.type === eventName) {
+    if (e.type === eventName) { // e.name
       return true;
     }
 
@@ -236,4 +239,45 @@ function onlyEvent(eventName) {
 
 function repeat(fn) {
 
+}
+
+// async function on(emitter, event) {
+//   async function* loop() {
+//     while (true) {
+//       yield await once(emitter, event)
+//     }
+//   }
+  
+//   const iter = loop();
+
+//   return {
+//     [Symbol.asyncIterator]() {
+//       return this
+//     }
+
+//     next() {
+//       return iter.next();
+//     }
+
+//     return() {
+//       iter.return();
+//     }
+//   }
+
+// }
+
+async function* seq2 (...iterables) {
+  for (const i of iterables) {
+    for await (const el of i) {
+      yield el;
+    }
+  }
+}
+
+async function* any2 (...iterables) {
+  const iters = iterables.map((el) => el[Symbol.asyncIterator]())
+  
+  while(true) {
+    yield (await Promise.race(iters.map(i => i.next()))).value; // any
+  }
 }
