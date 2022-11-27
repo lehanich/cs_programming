@@ -18,14 +18,25 @@ export class LRUCache implements DataCache {
 
   set(key: string | number, value: any): void {
     if (this.hashTable.size === this.maxSize) {
-      this.remove()
+      this.removeOldest()
     }
 
     this.updateLinkTime(key);
     this.hashTable.set(key, value);
   }
 
-  remove() {
+  remove(key: number | string) {
+    if (this.hashTable.has(key)) {
+      let link = this.timeQueue.findContainer(key)
+
+      if (link) {
+        this.timeQueue.delete(link);
+        this.hashTable.delete(key);
+      }
+    }
+  }
+
+  removeOldest() {
     let earlier = this.timeQueue.deleteFirst();
 
     if (earlier?.value && this.hashTable.has(earlier.value[0])) {

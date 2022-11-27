@@ -18,14 +18,25 @@ export class MRUCache implements DataCache {
 
   set(key: string | number, value: any): void {
     if (this.hashTable.size === this.maxSize) {
-      this.remove()
+      this.removeLast()
     }
 
     this.hashTable.set(key, value);
     this.updateLink(key);
   }
 
-  remove() {
+  remove(key: number | string) {
+    if (this.hashTable.has(key)) {
+      let link = this.timeQueue.findContainer(key)
+
+      if (link) {
+        this.timeQueue.delete(link);
+        this.hashTable.delete(key);
+      }
+    }
+  }
+
+  removeLast() {
     let earlier = this.timeQueue.deleteFirst();
 
     if (earlier?.value && this.hashTable.has(earlier.value)) {
