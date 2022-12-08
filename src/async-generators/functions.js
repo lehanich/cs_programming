@@ -1,171 +1,151 @@
+function on(element, event){ //onClick
+  let cb = null;
 
-
-function on(element, event) {
-  let value = undefined;
+  // function func (e) {
+  //   element.removeEventListener(event, func)
+  //   resolve({ value: e, done: false});
+  // }
+  function func(e) {
+    if (typeof cb === "function") {
+      cb(e);
+    }
+    cb = null
+  }
+  element.addEventListener(event, func)
 
   return {
-    [Symbol.asyncIterator]() {
-      // const queue = [];
+    [Symbol.asyncIterator](){
+      return this
+    },
 
-      // function nextEvent(fn) {
-      //   queue.push(fn);
-      // }
+    next: ()=> new Promise((resolve => {
+      cb = (event) => resolve({done: false,value: event})
+    })),
 
-      // function callback(e) {
-      //   queue.forEach((next) => next(e));
-      //   queue.length = 0;
-      // }
-
-      // element.addEventListener(event, callback);
-      
-      // return {
-      //   async next() {
-      //     return new Promise((resolve) => {
-      //       nextEvent((
-      //         value
-      //       ) => {
-      //         resolve({ value, done: false });
-      //       });
-      //     });
-      //   }
-      // }
-
-      return {
-        [Symbol.asyncIterator]() {
-          return this;
-        },
-
-        async next() {
-          return new Promise((resolve) => {
-            element.addEventListener(event, (e) => { // once true
-              resolve({ value: e, done: false });
-            });
-          });
-        }
-        // return() {
-        //   element.removeEventListener
-        // }
-      }
+    return: ()=> {
+      console.log("test")
+      element.removeEventListener(event,func);
+      return Promise.resolve({done: true , value: {}})
     }
   }
 }
 
-function take (iter, max) {
-  const cursor = iter[Symbol.asyncIterator]();
+// function on(emitter, event) {
+//   async function* loop() {
+//     while (true) {
+//       yield await onceClick(emitter, event) // onClick
+//     }
+//   }
 
-  return {
-    [Symbol.asyncIterator]() {
-      return this;
-    },
-    async next() {
-      max--;
+//   const iter = loop();
+//   let i = iter.next();
+//   console.log(i.value)
 
-      return (max > -1) ? cursor.next() : Promise.resolve({ done: true })
+//   return {
+//     [Symbol.asyncIterator]() {
+//       return this; // loop()
+//     },
+
+//     async next() {
+//       let t = await iter.next();
+//       console.log(t)
+//       console.log(t.value)
+//       return  Promise.resolve({value: t.value, done: false}); //t.value; // 
+//     },
+
+//     return() {
+//       iter.return();
+//       return Promise.resolve({done:true})
+//     }
+//   }
+// }
+
+//aply
+function onceClick(element, event) {
+  return new Promise((resolve) => {
+    function func (e) {
+      element.removeEventListener(event, func)
+      resolve({ value: e, done: false});
+    }
+    element.addEventListener(event, func); // , { once: true }
+  });
+}
+
+async function* once(element, event) {
+  yield onceClick(element, event) //onceClick
+  return Promise.resolve({done:true})
+}
+
+async function* seq (...iterables) {
+  // console.dir(iterables)
+  for (const i of iterables) {
+    for await (const el of i) {
+      yield el;
     }
   }
 }
 
-function once(element, event) {
-  return take(on(element, event), 1)
-  // let value = undefined;
-  // let i = 1;
-
-  // return {
-  //   [Symbol.asyncIterator]() {
-  //     return {
-  //       [Symbol.asyncIterator]() {
-  //         return this;
-  //       },
-
-  //       async next() {
-  //         i--;
-
-  //         return (i > -1) ? 
-  //                 new Promise((resolve) => {
-  //                   element.addEventListener(event, (e) => {
-  //                     resolve({ value: e, done: false });
-  //                   });
-  //                 }) :
-  //                 Promise.resolve({ done: true })
-  //       }
-  //     }
-  //   }
-  // }
-}
-
-function filter(iter, checkEvent) {
-  // return {
-  //   [Symbol.asyncIterator]() {
-      return {
-        [Symbol.asyncIterator]() {
-          return this;
-        },
-        async next() {
-          let el = await iter.next();
-
-          for await (el of iter) {
-            if (checkEvent(el)) {
-              return new Promise.resolve({
-                value: el,
-                done: false
-              });
-              // return {
-              //   value: el,
-              //   done: false
-              // }
-              
-            }
-          }
-
-          return Promise.resolve({
-            value: null,
-            done: true
-          })
-        }
-      }
-  //   }
-  // }
-}
-
-function seq(...args) {
-  let cursor = null;
-  let argsCursor = args[Symbol.iterator]();
-
-  return {
-    [Symbol.asyncIterator]() {
-      return this;
-    },
-
-    async next() {
-      if (!cursor) {
-        let test = argsCursor.next();
-
-        if (test.done) {
-          return Promise.resolve({ done: true, value: null });
-        }
-
-        cursor = test.value[Symbol.asyncIterator]();
-      }
-
-      const res = await cursor.next();
-      console.log(res)
-
-      // res.then((val) => {
-      //   if (res.done) {
-      //     cursor = null;
+async function* any (...iterables) {
+  const iters = iterables.map((el) => el[Symbol.asyncIterator]())
   
-      //     return this.next();
-      //   }
+  while (true) {
+    yield (await Promise.race(iters.map(i => i.next()))).value; // any
+  }
+}
 
-      //   return res;
-      // })
-      if (res.done) {
-        cursor = null;
+async function* repeat(fn) {
+  for(;;){
+    const startFn = fn();
+    for await(const e of startFn) {
+      yield e;
+    }
+  }
+}
 
-        return this.next();
+async function* every(iterables, fn){
+  for await(const event of iterables){
+    if(!event || !fn(event)) {
+      break;
+    }
+
+    yield event
+  }
+}
+
+function onlyEvent(eventName) {
+  return (e) => e.type === eventName ? true : false;
+}
+
+function filter(iterable, fn) {
+  const iter = iterable[Symbol.asyncIterator]();
+
+  return {
+    [Symbol.asyncIterator]() {
+      return this;
+    },
+    async next() {
+      let el = await iter.next();
+
+      console.log(1,el);
+
+      if (el.done || !el.value){
+        return this.return();
       }
 
-      return res;
+      while (!el.value && !fn(el.value)) {
+        el = await iter.next();
+        console.log(2,el.value);
+
+      }
+
+      return !el ? this.return() : Promise.resolve(el);
+    },
+
+    return() {
+      return Promise.resolve({
+        value: null,
+        done: true
+      })
     }
   }
 }
@@ -186,98 +166,23 @@ function map(iter, func) {
         return Promise.resolve({ done: true, value: null });
       }
 
-      // for (let func of funcs) {
-      //   newValue = func(newValue);
-      // }
       newValue = func(newValue);
 
       return Promise.resolve({ done: false, value: newValue })
-    }
-  }
-}
-
-function any(...args) {
-  let array = [];
-  for(let i=0; i < args.length; i++) {
-    let cursor = args[i][Symbol.asyncIterator]();
-    array.push(cursor.next());
-  }
-
-  console.log(array)
-
-  return {
-    [Symbol.asyncIterator]() {
-      return this;
     },
 
-    async next() {
-      return Promise.race([...array])
-      .then((value) => {
-        console.log(value);
-        // return Promise.resolve({ done: true, value: null })
-        // Both resolve, but promise2 is faster
-      });
+    return() {
+      return Promise({done: true});
     }
   }
 }
 
-function every(iter) {
-
-}
-
-function onlyEvent(eventName) {
-  fn = (e) => {
-    if (e.type === eventName) { // e.name
-      return true;
+async function* take (obj, max) {
+  for await (const el of obj) {
+    max--
+    yield await el;
+    if (max === 0) {
+      break;
     }
-
-    return false;
-  }
-
-  return fn
-}
-
-function repeat(fn) {
-
-}
-
-// async function on(emitter, event) {
-//   async function* loop() {
-//     while (true) {
-//       yield await once(emitter, event)
-//     }
-//   }
-  
-//   const iter = loop();
-
-//   return {
-//     [Symbol.asyncIterator]() {
-//       return this
-//     }
-
-//     next() {
-//       return iter.next();
-//     }
-
-//     return() {
-//       iter.return();
-//     }
-//   }
-
-// }
-
-async function* seq2 (...iterables) {
-  for (const i of iterables) {
-    for await (const el of i) {
-      yield el;
-    }
-  }
-}
-
-async function* any2 (...iterables) {
-  const iters = iterables.map((el) => el[Symbol.asyncIterator]())
-  
-  while(true) {
-    yield (await Promise.race(iters.map(i => i.next()))).value; // any
   }
 }

@@ -11,6 +11,9 @@
       position: absolute;
       top: 100px;
       left: 100px;
+      cursor: pointer;
+      user-select: none;
+      z-index: 1;
     }
   </style>
 
@@ -34,33 +37,52 @@
   <script src='functions.js'></script>
   <script>
 
-    // // check on
-    // (async () => {
-    //   for await (const e of on(document.body, 'click')) {
-    //     console.log(e);
-    //   }
-    // })()
+    // once(document.getElementById("test13"), 'click')
+    //   .then((value) => {console.log(value);});
 
-    // // check take
-    // (async () => {
-    //   for await (const e of take(on(document.body, 'click'), 3)) {
-    //     console.log(e);
-    //   }
-    // })()
+      // (async () => {
+      //     let iter = once(document.getElementById("test13"), 'click');
+      //     console.dir(iter)
+      //     for await (const e of iter) {
+      //       console.log(1, e);
+      //     }
+      // })();
+      let i = 0;
+      (async () => {
+          let iter = on(document.getElementById("test13"), 'click');
+          console.dir(iter)
+          for await (const e of iter) {
+            i++
+            console.log(1,i, e);
+            if (i>3) {
+              break;
+            }
+          }
+      })();
 
-    // // check once
-    // (async () => {
-    //   for await (const e of once(document.body, 'click')) {
-    //     console.log(e);
-    //   }
-    // })()
+      // (async () => {
+      //     let iter = on(document.body, 'click');
+      //     console.dir(iter)
+      //     for await (const e of iter) {
+      //       console.log(1, e);
+      //     }
+      // })();
 
-    // // check seq
+    // (async () => {
+    //       let iter = take(on(document.body, 'click'), 3);
+    //       console.dir(iter)
+    //       for await (const e of iter) {
+    //         console.log(1, e);
+    //       }
+    //     })()
+
+    // check seq
     // (async () => {
     //   for await (const e of seq(once(document.body, 'mousedown'), take(on(document.body, 'mouseup'), 10))) {
     //     console.log(e);
     //   }
     // })()
+
 
     // // check map
     // (async () => {
@@ -81,99 +103,45 @@
 
     var ball = document.getElementById('my-box');
 
-     // check any
-     (async () => {
-      for await (const e of any(on(ball, 'mouseup'),on(ball, 'mousemove'))) {
-        console.log(e);
+    (async () => {
+      const dnd = 
+        repeat(() => 
+          filter(
+            seq(
+              once(ball, 'mousedown'),
+              every(
+                any(
+                  on(document.body, 'mousemove'),
+                  on(ball, 'mouseup')
+                ),
+                onlyEvent('mousemove')
+              )
+            ),
+            onlyEvent('mousemove')
+          )
+        );
+   
+      var shiftX = 0;
+      var shiftY = 0;
+
+      for await (const ev of dnd) {
+        
+        const { top, left } = getCoords(ball);
+        // var shiftX = ev.pageX - top;
+        // var shiftY = ev.pageY - left;
+        
+       ball.style.left = ev.pageX - shiftX + 'px';
+        ball.style.top = ev.pageY - shiftY + 'px';
+
       }
+
     })()
-
-    // check move
-    // (async () => {
-    //   for await (const e of seq(
-    //                           once(ball, 'mousedown'),
-
-    //                           // every(
-    //                             any(
-    //                               on(document.body, 'mousemove'),
-    //                               on(ball, 'mouseup'),
-    //                               // on(ball, 'mousedown'),
-    //                             ),
-
-    //                             // seq(
-    //                             //   on(ball, 'mouseup'),
-    //                             //   map([
-    //                             //     on(document.body, 'mousemove'),
-    //                             //     on(ball, 'mouseup')
-    //                             //   ],
-    //                             //     clear
-    //                             //   )
-    //                             // )
-    //                             // on(ball, 'mouseup'),
-    //                             // ,
-                          
-    //                             // onlyEvent('mousemove')
-    //                           // )
-    //                         )) {
-    //     console.log(e);
-
-    //     var coords = getCoords(ball);
-    //   // var shiftX = e.pageX - coords.left;
-    //   // var shiftY = e.pageY - coords.top;
-      
-    //   // console.log(shiftX, shiftY, coords);
-
-    //   ball.style.position = 'absolute';
-    //   document.body.appendChild(ball);
-    //   // moveAt(e);
-
-    //   ball.style.zIndex = 1000; // над другими элементами
-
-    //   // function moveAt(e) {
-    //   //   ball.style.left = e.pageX - shiftX + 'px';
-    //   //   ball.style.top = e.pageY - shiftY + 'px';
-    //   // }
-
-    //   ball.style.left = e.pageX  + 'px';
-    //   ball.style.top = e.pageY  + 'px';
-
-
-
-    //   }
-    // })()
+   
 
     function clear(e) {
       console.log("!!!", e)
       e = null
     }
-
-    // ball.onmousedown = function(e) {
-
-    //   var coords = getCoords(ball);
-    //   var shiftX = e.pageX - coords.left;
-    //   var shiftY = e.pageY - coords.top;
-
-    //   ball.style.position = 'absolute';
-    //   document.body.appendChild(ball);
-    //   moveAt(e);
-
-    //   ball.style.zIndex = 1000; // над другими элементами
-
-    //   function moveAt(e) {
-    //     ball.style.left = e.pageX - shiftX + 'px';
-    //     ball.style.top = e.pageY - shiftY + 'px';
-    //   }
-
-    //   document.onmousemove = function(e) {
-    //     moveAt(e);
-    //   };
-
-    //   ball.onmouseup = function() {
-    //     document.onmousemove = null;
-    //     ball.onmouseup = null;
-    //   };
-
-    // }
 
     ball.ondragstart = function() {
       return false;
