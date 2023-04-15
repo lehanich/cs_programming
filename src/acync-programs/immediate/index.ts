@@ -24,7 +24,7 @@ class Task {
   constructor(cb: Function, ...args: [any]) {
     this.#active = true;
     this.start = cb;
-  }
+  } 
 
   get active() {
     return this.#active;

@@ -9,17 +9,17 @@ function on(element, event){ //onClick
     if (typeof cb === "function") {
       cb(e);
     }
-    cb = null
+    cb = null;
   }
-  element.addEventListener(event, func)
+  element.addEventListener(event, func);
 
   return {
     [Symbol.asyncIterator](){
-      return this
+      return this;
     },
 
     next: ()=> new Promise((resolve => {
-      cb = (event) => resolve({done: false,value: event})
+      cb = (event) => resolve({done: false,value: event});
     })),
 
     return: ()=> {

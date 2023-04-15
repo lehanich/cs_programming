@@ -11,7 +11,7 @@ abstract class Duckable {
     throw 'Unimplemented!';
   }
 
-  static getQuack: AddSelf<Duckable['getQuack'], Duckable> = (self, size: number) => {
+  static getQuack: AddSelf<Duckable['getQuack'], Duckable> = (self: any, size: number) => {
     if (size < 10) {
       return 'quack!';
     }
@@ -24,9 +24,10 @@ abstract class Duckable {
   };
 }
 
-abstract class Trait<T> extends Duckable {
-
+type Trait<F extends Function, P extends F['prototype'] = F['prototype']> = {
+  [K in Extract <keyof F, keyof P>]: P[K]
 }
+
 
 interface DuckLike extends Trait<typeof Duckable> {}
 
@@ -42,9 +43,11 @@ class DuckLike implements Duckable {
 /// 'QUACK!!!'
 console.log(new DuckLike().getQuack(60));
 
-function derive(duck: Duckable) {
+function derive(duck: any) {
   return (target: any) => {
     Object.assign(target.prototype, Duckable.prototype)
+    Object.getOwnPropertyNames(Test)
+    
     return target
   };
 }

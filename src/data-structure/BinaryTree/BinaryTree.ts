@@ -100,8 +100,4 @@ export default class BinaryTree<T> implements IBinaryTree<T> {
 
     return false;
   };
-
-
-
-
 }

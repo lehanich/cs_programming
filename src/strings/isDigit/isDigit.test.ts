@@ -17,7 +17,7 @@ describe("Is Digit", function () {
     const test = isDigit('1e23e');
     expect(test === false);
   });
-  it("Check digits with char Ⅻx ", () => {
+  it("Check digits with char 'x' Ⅻx ", () => {
     const test = isDigit('Ⅻx');
     expect(test === false);
   });

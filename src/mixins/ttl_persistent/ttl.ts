@@ -1,7 +1,7 @@
 import { DataCache } from "oop-basic/cache/interface";
 
 export function ttl(cache: DataCache, time: number){
-  let proto = Object.getPrototypeOf(cache);
+  let proto = ecache);
   let setFunc = proto.set;
 
   Object.assign(proto, {
